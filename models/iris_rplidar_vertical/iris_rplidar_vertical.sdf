@@ -37,7 +37,7 @@
         </limit>
       </axis>
     </joint>
-
+    
     <include>
       <uri>model://rplidar</uri>
       <pose>-0.12 0 0 0 1.5708 0</pose>
@@ -53,7 +53,6 @@
         </limit>
       </axis>
     </joint>
-
   </model>
 </sdf>
 <!-- vim: set noet fenc=utf-8 ff=unix sts=0 sw=4 ts=4 : -->
