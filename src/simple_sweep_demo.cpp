@@ -6,12 +6,16 @@
 #include <ros/ros.h>
 #include <ros/topic.h>
 
+// laser assembler
+#include <laser_assembler/AssembleScans.h>
+
 // geometry msgs
 #include <geometry_msgs/PoseStamped.h>
 #include <geometry_msgs/TwistStamped.h>
 
 // sensor msgs
 #include <sensor_msgs/NavSatFix.h>
+#include <sensor_msgs/PointCloud.h>
 
 // mavros msgs
 #include <mavros_msgs/CommandBool.h>
@@ -69,6 +73,8 @@ int main(int argc, char **argv)
     // Publisher
     ros::Publisher target_pos_pub = nh.advertise<geometry_msgs::PoseStamped>
             ("mavros/setpoint_position/local", 10);
+    ros::Publisher point_cloud_pub = nh.advertise<sensor_msgs::PointCloud>
+            ("cloud", 10);
     
     // Service Client
     ros::ServiceClient arming_client = nh.serviceClient<mavros_msgs::CommandBool>
@@ -81,7 +87,12 @@ int main(int argc, char **argv)
             ("mavros/cmd/land");
     ros::ServiceClient set_mode_client = nh.serviceClient<mavros_msgs::SetMode>
             ("mavros/set_mode");
+    ros::ServiceClient pc_gen_client = nh.serviceClient<laser_assembler::AssembleScans>
+            ("assemble_scans");    
 
+    // wait for laser assembler
+    ros::service::waitForService("assemble_scans");
+    laser_assembler::AssembleScans pc_gen_cmd;
 
     //the setpoint publishing rate MUST be faster than 2Hz
     ros::Rate rate(20.0);
@@ -151,7 +162,9 @@ int main(int argc, char **argv)
         rate.sleep();
         ROS_DEBUG("Current lat: %f, lon: %f, alt: %f",curr_latitude,curr_longitude,curr_altitude);
     }
-    ROS_INFO("Vehicle tookoff.");   
+    ROS_INFO("Vehicle tookoff.");
+
+    pc_gen_cmd.request.begin = ros::Time(0,0);
 
     // move along x axis
     geometry_msgs::PoseStamped target_pos_msg;
@@ -163,8 +176,6 @@ int main(int argc, char **argv)
     target_pos_msg.pose.orientation.z = local_pos.pose.orientation.z;
     target_pos_msg.pose.orientation.w = local_pos.pose.orientation.w;
     
-
-    // regard vehicle as arrived destination if velocity is lower than 0.5
     ROS_INFO("Vehicle moving forward...");
 
     while (local_pos.pose.position.y > -19.9){
@@ -182,6 +193,8 @@ int main(int argc, char **argv)
     }
     ROS_INFO("Vehicle arrived destination.");
 
+    pc_gen_cmd.request.end = ros::Time::now();
+
     // land
     mavros_msgs::CommandTOL landing_cmd;
     landing_cmd.request.altitude = curr_altitude - 2.0;
@@ -195,7 +208,6 @@ int main(int argc, char **argv)
     }
     ROS_INFO("Vehicle landing...");
 
-    // regard vehicle as landed if vertical velocity is lower than 0.5
     while(local_pos.pose.position.z > 0.1){
         ros::spinOnce();
         rate.sleep();
@@ -208,6 +220,16 @@ int main(int argc, char **argv)
     }
     ROS_INFO("Vehicle disarmed");
 
+    if (pc_gen_client.call(pc_gen_cmd)){
+        ROS_INFO("Got cloud with %u points.", pc_gen_cmd.response.cloud.points.size());
+        for(int i=0; i<10; ++i){
+            point_cloud_pub.publish(pc_gen_cmd.response.cloud);
+            ros::spinOnce();
+            rate.sleep();
+        }
+    }else{
+        ROS_INFO("Service call failed.");
+    }
 
 	return 0;
 }

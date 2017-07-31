@@ -5,6 +5,11 @@ Panels:
     Property Tree Widget:
       Expanded:
         - /Global Options1
+        - /Status1
+        - /Grid1
+        - /LaserScan1
+        - /TF1
+        - /PointCloud1
       Splitter Ratio: 0.5
     Tree Height: 565
   - Class: rviz/Selection
@@ -104,6 +109,36 @@ Visualization Manager:
               {}
       Update Interval: 0
       Value: true
+    - Alpha: 1
+      Autocompute Intensity Bounds: true
+      Autocompute Value Bounds:
+        Max Value: 10
+        Min Value: -10
+        Value: true
+      Axis: Z
+      Channel Name: intensity
+      Class: rviz/PointCloud
+      Color: 255; 255; 255
+      Color Transformer: Intensity
+      Decay Time: 0
+      Enabled: true
+      Invert Rainbow: false
+      Max Color: 255; 255; 255
+      Max Intensity: 4096
+      Min Color: 0; 0; 0
+      Min Intensity: 0
+      Name: PointCloud
+      Position Transformer: XYZ
+      Queue Size: 10
+      Selectable: true
+      Size (Pixels): 3
+      Size (m): 0.00999999978
+      Style: Flat Squares
+      Topic: /cloud
+      Unreliable: false
+      Use Fixed Frame: true
+      Use rainbow: true
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -128,24 +163,24 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 7.41425419
+      Distance: 39.8898354
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.0599999987
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 0.2038192
-        Y: -0.189473942
-        Z: -0.0683753937
+        X: 4.01953506
+        Y: -7.27460432
+        Z: -12.0325823
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.0500000007
       Name: Current View
       Near Clip Distance: 0.00999999978
-      Pitch: 0.430398315
+      Pitch: 0.560398519
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 3.81857753
+      Yaw: 4.37357998
     Saved: ~
 Window Geometry:
   Displays:
@@ -163,5 +198,5 @@ Window Geometry:
   Views:
     collapsed: false
   Width: 1200
-  X: 1776
-  Y: 239
+  X: 1704
+  Y: 232
