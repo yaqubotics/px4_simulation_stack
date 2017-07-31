@@ -69,13 +69,13 @@ int main(int argc, char **argv)
             ("mavros/global_position/global", 10, curr_gpos_cb);
     ros::Subscriber fcu_vel_sub = nh.subscribe<geometry_msgs::TwistStamped>
             ("mavros/local_position/velocity", 100, fcu_vel_cb);
-    
+
     // Publisher
     ros::Publisher target_pos_pub = nh.advertise<geometry_msgs::PoseStamped>
             ("mavros/setpoint_position/local", 10);
     ros::Publisher point_cloud_pub = nh.advertise<sensor_msgs::PointCloud>
             ("cloud", 10);
-    
+
     // Service Client
     ros::ServiceClient arming_client = nh.serviceClient<mavros_msgs::CommandBool>
             ("mavros/cmd/arming");
@@ -88,11 +88,12 @@ int main(int argc, char **argv)
     ros::ServiceClient set_mode_client = nh.serviceClient<mavros_msgs::SetMode>
             ("mavros/set_mode");
     ros::ServiceClient pc_gen_client = nh.serviceClient<laser_assembler::AssembleScans>
-            ("assemble_scans");    
+            ("assemble_scans");
 
     // wait for laser assembler
     ros::service::waitForService("assemble_scans");
     laser_assembler::AssembleScans pc_gen_cmd;
+    pc_gen_cmd.request.begin = ros::Time(0,0);
 
     //the setpoint publishing rate MUST be faster than 2Hz
     ros::Rate rate(20.0);
@@ -115,18 +116,18 @@ int main(int argc, char **argv)
     // set home position as current position
     mavros_msgs::CommandHome set_hp_cmd;
     set_hp_cmd.request.current_gps = true;
-    while( not(set_hp_client.call(set_hp_cmd)) and 
+    while( not(set_hp_client.call(set_hp_cmd)) and
                set_hp_cmd.response.success){
         ros::spinOnce();
         rate.sleep();
     }
     ROS_INFO("HP set.");
-    
+
     // set mode as offboard
     mavros_msgs::SetMode offb_set_mode;
     offb_set_mode.request.custom_mode = "OFFBOARD";
 
-    while( not(set_mode_client.call(offb_set_mode)) and 
+    while( not(set_mode_client.call(offb_set_mode)) and
                offb_set_mode.response.success){
         ros::spinOnce();
         rate.sleep();
@@ -152,7 +153,7 @@ int main(int argc, char **argv)
 
     ROS_DEBUG("set lat: %f, lon: %f, alt: %f", init_latitude, init_longitude, init_altitude);
 
-    while( not(takeoff_client.call(takeoff_cmd)) and 
+    while( not(takeoff_client.call(takeoff_cmd)) and
                takeoff_cmd.response.success){
         ros::spinOnce();
         rate.sleep();
@@ -164,8 +165,6 @@ int main(int argc, char **argv)
     }
     ROS_INFO("Vehicle tookoff.");
 
-    pc_gen_cmd.request.begin = ros::Time(0,0);
-
     // move along x axis
     geometry_msgs::PoseStamped target_pos_msg;
     target_pos_msg.pose.position.x = local_pos.pose.position.x;
@@ -175,7 +174,7 @@ int main(int argc, char **argv)
     target_pos_msg.pose.orientation.y = local_pos.pose.orientation.y;
     target_pos_msg.pose.orientation.z = local_pos.pose.orientation.z;
     target_pos_msg.pose.orientation.w = local_pos.pose.orientation.w;
-    
+
     ROS_INFO("Vehicle moving forward...");
 
     while (local_pos.pose.position.y > -19.9){
@@ -183,7 +182,7 @@ int main(int argc, char **argv)
         ros::spinOnce();
         rate.sleep();
         if(current_state.mode!="OFFBOARD"){
-            while( not(set_mode_client.call(offb_set_mode)) and 
+            while( not(set_mode_client.call(offb_set_mode)) and
                 offb_set_mode.response.success){
                 ros::spinOnce();
                 rate.sleep();
@@ -194,6 +193,7 @@ int main(int argc, char **argv)
     ROS_INFO("Vehicle arrived destination.");
 
     pc_gen_cmd.request.end = ros::Time::now();
+    ROS_INFO("End buffering laser scan data.");
 
     // land
     mavros_msgs::CommandTOL landing_cmd;
@@ -201,7 +201,7 @@ int main(int argc, char **argv)
     landing_cmd.request.longitude = curr_longitude;
     landing_cmd.request.latitude = curr_latitude;
 
-    while( not(landing_client.call(landing_cmd)) and 
+    while( not(landing_client.call(landing_cmd)) and
                landing_cmd.response.success){
         ros::spinOnce();
         rate.sleep();
@@ -221,14 +221,14 @@ int main(int argc, char **argv)
     ROS_INFO("Vehicle disarmed");
 
     if (pc_gen_client.call(pc_gen_cmd)){
-        ROS_INFO("Got cloud with %u points.", pc_gen_cmd.response.cloud.points.size());
+        ROS_INFO("Got cloud with %lu points.", pc_gen_cmd.response.cloud.points.size());
         for(int i=0; i<10; ++i){
             point_cloud_pub.publish(pc_gen_cmd.response.cloud);
             ros::spinOnce();
             rate.sleep();
         }
     }else{
-        ROS_INFO("Service call failed.");
+        ROS_INFO("Service \"assemble_scan\" call failed.");
     }
 
 	return 0;
