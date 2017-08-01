@@ -7,7 +7,7 @@
 #include <ros/topic.h>
 
 // laser assembler
-#include <laser_assembler/AssembleScans.h>
+#include <laser_assembler/AssembleScans2.h>
 
 // geometry msgs
 #include <geometry_msgs/PoseStamped.h>
@@ -15,7 +15,7 @@
 
 // sensor msgs
 #include <sensor_msgs/NavSatFix.h>
-#include <sensor_msgs/PointCloud.h>
+#include <sensor_msgs/PointCloud2.h>
 
 // mavros msgs
 #include <mavros_msgs/CommandBool.h>
@@ -73,7 +73,7 @@ int main(int argc, char **argv)
     // Publisher
     ros::Publisher target_pos_pub = nh.advertise<geometry_msgs::PoseStamped>
             ("mavros/setpoint_position/local", 10);
-    ros::Publisher point_cloud_pub = nh.advertise<sensor_msgs::PointCloud>
+    ros::Publisher point_cloud_pub = nh.advertise<sensor_msgs::PointCloud2>
             ("cloud", 10);
 
     // Service Client
@@ -87,13 +87,12 @@ int main(int argc, char **argv)
             ("mavros/cmd/land");
     ros::ServiceClient set_mode_client = nh.serviceClient<mavros_msgs::SetMode>
             ("mavros/set_mode");
-    ros::ServiceClient pc_gen_client = nh.serviceClient<laser_assembler::AssembleScans>
-            ("assemble_scans");
+    ros::ServiceClient pc_gen_client = nh.serviceClient<laser_assembler::AssembleScans2>
+            ("assemble_scans2");
 
     // wait for laser assembler
     ros::service::waitForService("assemble_scans");
-    laser_assembler::AssembleScans pc_gen_cmd;
-    pc_gen_cmd.request.begin = ros::Time(0,0);
+    laser_assembler::AssembleScans2 pc_gen_cmd;
 
     //the setpoint publishing rate MUST be faster than 2Hz
     ros::Rate rate(20.0);
@@ -165,6 +164,8 @@ int main(int argc, char **argv)
     }
     ROS_INFO("Vehicle tookoff.");
 
+    pc_gen_cmd.request.begin = ros::Time::now();
+
     // move along x axis
     geometry_msgs::PoseStamped target_pos_msg;
     target_pos_msg.pose.position.x = local_pos.pose.position.x;
@@ -221,7 +222,7 @@ int main(int argc, char **argv)
     ROS_INFO("Vehicle disarmed");
 
     if (pc_gen_client.call(pc_gen_cmd)){
-        ROS_INFO("Got cloud with %lu points.", pc_gen_cmd.response.cloud.points.size());
+        ROS_INFO("Got cloud with %lu points.", pc_gen_cmd.response.cloud.data.size());
         for(int i=0; i<10; ++i){
             point_cloud_pub.publish(pc_gen_cmd.response.cloud);
             ros::spinOnce();
