@@ -145,8 +145,9 @@ int main(int argc, char **argv)
     ROS_INFO("Vehicle armed.");
 
     // takeoff
+    double climb_hieght = 5.5;
     mavros_msgs::CommandTOL takeoff_cmd;
-    takeoff_cmd.request.altitude = init_altitude + 2.5;
+    takeoff_cmd.request.altitude = init_altitude + climb_hieght;
     takeoff_cmd.request.longitude = init_longitude;
     takeoff_cmd.request.latitude = init_latitude;
 
@@ -157,7 +158,7 @@ int main(int argc, char **argv)
         ros::spinOnce();
         rate.sleep();
     }
-    while(local_pos.pose.position.z < 2.4){
+    while(local_pos.pose.position.z < climb_hieght-0.1){
         ros::spinOnce();
         rate.sleep();
         ROS_DEBUG("Current lat: %f, lon: %f, alt: %f",curr_latitude,curr_longitude,curr_altitude);
@@ -170,7 +171,7 @@ int main(int argc, char **argv)
     geometry_msgs::PoseStamped target_pos_msg;
     target_pos_msg.pose.position.x = local_pos.pose.position.x;
     target_pos_msg.pose.position.y = -20.0;
-    target_pos_msg.pose.position.z = 2.5;
+    target_pos_msg.pose.position.z = climb_hieght;
     target_pos_msg.pose.orientation.x = local_pos.pose.orientation.x;
     target_pos_msg.pose.orientation.y = local_pos.pose.orientation.y;
     target_pos_msg.pose.orientation.z = local_pos.pose.orientation.z;
@@ -198,7 +199,7 @@ int main(int argc, char **argv)
 
     // land
     mavros_msgs::CommandTOL landing_cmd;
-    landing_cmd.request.altitude = curr_altitude - 2.0;
+    landing_cmd.request.altitude = curr_altitude - climb_hieght + 0.5;
     landing_cmd.request.longitude = curr_longitude;
     landing_cmd.request.latitude = curr_latitude;
 
