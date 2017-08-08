@@ -1,6 +1,6 @@
 <launch>
 
-    <node pkg="rviz" type="rviz" name="iris_rviz" args="-d $(find px4_dem_planning)/launch/iris_lidar_vertical.rviz" />
+    <node pkg="rviz" type="rviz" name="iris_rviz" args="-d $(find px4_simulation_stack)/launch/iris_lidar_vertical.rviz" />
 
 </launch>
 

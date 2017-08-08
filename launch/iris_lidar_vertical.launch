@@ -9,9 +9,9 @@
     <arg name="Y" default="0"/>
     <arg name="est" default="lpe"/>
     <arg name="vehicle" default="iris_lidar_vertical"/>
-    <arg name="world" default="$(find px4_dem_planning)/Tools/sitl_gazebo/worlds/iris_lidar_vertical_plane.world"/>
-    <arg name="sdf" default="$(find px4_dem_planning)/Tools/sitl_gazebo/models/$(arg vehicle)/$(arg vehicle).sdf"/>
-    <arg name="rcS" default="$(find px4_dem_planning)/posix-configs/SITL/init/$(arg est)/$(arg vehicle)"/>
+    <arg name="world" default="$(find px4_simulation_stack)/Tools/sitl_gazebo/worlds/iris_lidar_vertical_plane.world"/>
+    <arg name="sdf" default="$(find px4_simulation_stack)/Tools/sitl_gazebo/models/$(arg vehicle)/$(arg vehicle).sdf"/>
+    <arg name="rcS" default="$(find px4_simulation_stack)/posix-configs/SITL/init/$(arg est)/$(arg vehicle)"/>
 
     <arg name="headless" default="false"/>
     <arg name="gui" default="true"/>
@@ -43,7 +43,7 @@
     <arg name="log_output" default="screen" />
     <include file="$(find mavros)/launch/node.launch">
         <arg name="pluginlists_yaml" value="$(find mavros)/launch/px4_pluginlists.yaml" />
-		<arg name="config_yaml" value="$(find px4_dem_planning)/launch/px4_config.yaml" />
+		<arg name="config_yaml" value="$(find px4_simulation_stack)/launch/px4_config.yaml" />
 
 		<arg name="fcu_url" value="$(arg fcu_url)" />
 		<arg name="gcs_url" value="$(arg gcs_url)" />
@@ -53,7 +53,7 @@
     </include>
     
     <!-- Launching laser_assembler -->
-    <include file="$(find px4_dem_planning)/launch/px4_assemble.launch" />
+    <include file="$(find px4_simulation_stack)/launch/px4_assemble.launch" />
         
     <!-- Adding static transformation -->
     <node name="lidar_link_tf" pkg="tf" type="static_transform_publisher" args="0 0 0 0 1.57 0 fcu lidar_link 100"/>
