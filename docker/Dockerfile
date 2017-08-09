@@ -2,15 +2,17 @@ FROM ros:kinetic
 
 MAINTAINER Takaki Ueno
 
-ARG DEBIAN_FRONTEND=noninteractive
-
 # Change environment related to ROS
-ENV ROS_PACKAGE_PATH=/root/catkin_ws/src:/opt/ros/kinetic/share
-ENV ROS_ETC_DIR=/opt/ros/kinetic/etc/ros
-ENV ROS_ROOT=/opt/ros/kinetic/share/ros
-ENV ROS_MASTER_URI=http://localhost:11311
-ENV ROS_DISTRO=kinetic
-ENV ROSLISP_PACKAGE_DIRECTORIES=/root/catkin_ws/devel/share/common-lisp
+ENV ROS_PACKAGE_PATH=/root/catkin_ws/src:/opt/ros/kinetic/share \
+    ROS_ETC_DIR=/opt/ros/kinetic/etc/ros \
+    ROS_ROOT=/opt/ros/kinetic/share/ros \
+    ROS_MASTER_URI=http://localhost:11311 \
+    ROS_DISTRO=kinetic \
+    ROSLISP_PACKAGE_DIRECTORIES=/root/catkin_ws/devel_isolated/share/common-lisp
+
+# Set an argument to avoid debconf error,
+# but this does not seem to work.
+ARG DEBIAN_FRONTEND noninteractive
 
 # Update repos and install some packages
 RUN apt-get update && \
@@ -49,5 +51,5 @@ RUN /bin/bash -c ". /opt/ros/kinetic/setup.bash && \
 WORKDIR /root/catkin_ws
 RUN /bin/bash -c ". /opt/ros/kinetic/setup.bash && \
     rm -rf devel build && \
-    catkin_make_isolate"
-RUN echo "source /root/catkin_ws/devel/setup.bash" >> /root/.bashrc
+    catkin_make_isolated"
+RUN echo "source /root/catkin_ws/devel_isolated/setup.bash" >> /root/.bashrc
