@@ -12,7 +12,7 @@ ENV ROS_PACKAGE_PATH=/root/catkin_ws/src:/opt/ros/kinetic/share \
 
 # Set an argument to avoid debconf error,
 # but this does not seem to work.
-ARG DEBIAN_FRONTEND noninteractive
+ARG DEBIAN_FRONTEND=noninteractive
 
 # Update repos and install some packages
 RUN apt-get update && \
