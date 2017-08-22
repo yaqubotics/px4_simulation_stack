@@ -1,0 +1,10 @@
+<launch>
+
+  <arg name="gui" default="true"/>
+
+  <!-- start gazebo client -->
+  <group if="$(arg gui)">
+    <node name="gazebo_gui" pkg="gazebo_ros" type="gzclient" respawn="false" output="screen"/>
+  </group>
+
+</launch>
