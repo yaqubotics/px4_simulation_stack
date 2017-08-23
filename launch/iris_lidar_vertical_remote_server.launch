@@ -1,0 +1,62 @@
+<launch>
+
+    <!-- Posix SITL environment launch script -->
+    <arg name="x" default="0"/>
+    <arg name="y" default="0"/>
+    <arg name="z" default="0"/>
+    <arg name="R" default="0"/>
+    <arg name="P" default="0"/>
+    <arg name="Y" default="0"/>
+    <arg name="est" default="lpe"/>
+    <arg name="vehicle" default="iris_lidar_vertical"/>
+    <arg name="config_posix" default="$(arg vehicle)"/>
+    <arg name="world" default="$(find px4_simulation_stack)/Tools/sitl_gazebo/worlds/iris_lidar_vertical_plane.world"/>
+    <arg name="sdf" default="$(find px4_simulation_stack)/Tools/sitl_gazebo/models/$(arg vehicle)/$(arg vehicle).sdf"/>
+    <arg name="rcS" default="$(find px4_simulation_stack)/posix-configs/SITL/init/$(arg est)/$(arg config_posix)"/>
+
+    <arg name="headless" default="false"/>
+    <arg name="ns" default="/"/>
+
+    <arg name="debug" default="false"/>
+    <arg name="verbose" default="false"/>
+    <arg name="paused" default="false"/>
+
+    <node name="sitl" pkg="px4" type="px4" output="screen"
+        args="$(find px4) $(arg rcS)">
+    </node>
+
+    <!-- Launching gzserver -->
+    <include file="$(find px4_simulation_stack)/launch/gzserver.launch">
+        <arg name="headless" value="$(arg headless)"/>
+        <arg name="world_name" value="$(arg world)" />
+        <arg name="debug" value="$(arg debug)" />
+        <arg name="verbose" value="$(arg verbose)" />
+        <arg name="paused" value="$(arg paused)" />
+    </include>
+
+    <!-- Launching MAVROS -->
+    <arg name="fcu_url" default="udp://localhost:14540@localhost:14557" />
+    <arg name="gcs_url" default="" />
+    <arg name="tgt_system" default="1" />
+    <arg name="tgt_component" default="1" />
+    <arg name="log_output" default="screen" />
+    <include file="$(find mavros)/launch/node.launch">
+        <arg name="pluginlists_yaml" value="$(find mavros)/launch/px4_pluginlists.yaml" />
+		<arg name="config_yaml" value="$(find px4_simulation_stack)/launch/px4_config.yaml" />
+
+		<arg name="fcu_url" value="$(arg fcu_url)" />
+		<arg name="gcs_url" value="$(arg gcs_url)" />
+		<arg name="tgt_system" value="$(arg tgt_system)" />
+		<arg name="tgt_component" value="$(arg tgt_component)" />
+		<arg name="log_output" value="$(arg log_output)" />
+    </include>
+    
+    <!-- Launching laser_assembler -->
+    <include file="$(find px4_simulation_stack)/launch/px4_assemble.launch" />
+        
+    <!-- Adding static transformation -->
+    <node name="lidar_link_tf" pkg="tf" type="static_transform_publisher" args="0 0 0 0 1.57 0 fcu lidar_link 100"/>
+        
+</launch>
+
+<!-- vim: set et ft=xml fenc=utf-8 ff=unix sts=0 sw=4 ts=4 : -->
