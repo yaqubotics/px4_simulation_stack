@@ -1,3 +1,9 @@
+/**
+* @file simple_sweep_demo.cpp
+* @brief Node for simple demo of point cloud construction
+* @author Takaki Ueno
+*/
+
 // C/C++ libraries
 #include <cmath>
 #include <string>
@@ -25,22 +31,39 @@
 #include <mavros_msgs/CommandHome.h>
 
 
-// callback function for state_sub
+//! Storage for vehicle state
 mavros_msgs::State current_state;
+
+/**
+* @brief Callback function for state subscriber
+* @param msg Incoming message
+*/
 void state_cb(const mavros_msgs::State::ConstPtr& msg){
     current_state = *msg;
 }
 
-// callback function for local_pos_sub
+
+//! Storage for local position
 geometry_msgs::PoseStamped local_pos;
+
+/**
+* @brief Callback function for local position subscriber
+* @param msg Incoming message
+*/
 void local_pos_cb(const geometry_msgs::PoseStamped::ConstPtr& msg){
     local_pos = *msg;
 }
 
-// callback function for curr_gpos_sub
+//! Storage for current latitude
 double curr_latitude;
+//! Storage for current longitude
 double curr_longitude;
+//! Storage for current altitude
 double curr_altitude;
+/**
+* @brief Callback function for global position subscriber
+* @param msg Incoming message
+*/
 void curr_gpos_cb(const sensor_msgs::NavSatFix::ConstPtr& msgptr){
     sensor_msgs::NavSatFix msg = *msgptr;
     curr_latitude = msg.latitude;
@@ -48,8 +71,12 @@ void curr_gpos_cb(const sensor_msgs::NavSatFix::ConstPtr& msgptr){
     curr_altitude = msg.altitude;
 }
 
-// callback function for fcu_vel_sub
+//! Storage for current velocity of vehicle
 geometry_msgs::TwistStamped fcu_vel;
+/**
+* @brief Callback function for velocity position subscriber
+* @param msg Incoming message
+*/
 void fcu_vel_cb(const geometry_msgs::TwistStamped::ConstPtr& msg){
     fcu_vel = *msg;
 }
