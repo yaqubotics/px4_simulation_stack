@@ -137,6 +137,7 @@ include_directories(
 ## The recommended prefix ensures that target names across packages don't collide
 # add_executable(${PROJECT_NAME}_node src/px4_simulation_stack_node.cpp)
 add_executable(simple_sweep_demo src/simple_sweep_demo.cpp)
+add_executable(offb_node src/offb_node.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -153,6 +154,7 @@ add_executable(simple_sweep_demo src/simple_sweep_demo.cpp)
 #   ${catkin_LIBRARIES}
 # )
 target_link_libraries(simple_sweep_demo ${catkin_LIBRARIES})
+target_link_libraries(offb_node ${catkin_LIBRARIES})
 
 #############
 ## Install ##
