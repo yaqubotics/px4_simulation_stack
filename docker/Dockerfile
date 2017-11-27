@@ -53,7 +53,7 @@ RUN wget http://packages.osrfoundation.org/gazebo.key -O - | sudo apt-key add -
 RUN apt-get update && \
     apt-get install -y gazebo7 libignition-math2-dev
 
-RUN echo "source /root/catkin_ws/devel_isolated/setup.bash" >> /root/.bashrc
+RUN echo "source /root/catkin_ws/devel/setup.bash" >> /root/.bashrc
 RUN echo "source /root/src/Firmware/Tools/setup_gazebo.bash /root/src/Firmware /root/src/Firmware/build_posix_sitl_default > /dev/null" >> /root/.bashrc
 
 # Clone px4_simulation_stack
@@ -64,7 +64,11 @@ RUN git clone https://github.com/uenota/px4_simulation_stack.git
 WORKDIR /root/catkin_ws
 RUN /bin/bash -c ". /opt/ros/kinetic/setup.bash && \
     rm -rf devel build && \
-    catkin_make_isolated"
+    catkin build"
 
 RUN echo 'export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:/root/src/Firmware/Tools/sitl_gazebo:/root/src/Firmware' >> /root/.bashrc
+
+WORKDIR /root/catkin_ws/src/mavros/mavros/scripts
+RUN bash install_geographiclib_datasets.sh
+
 WORKDIR /root/src/Firmware
