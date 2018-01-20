@@ -26,7 +26,7 @@ It is convenient to write settings in .bashrc and .profile.
   
 In Firmware directory,
 ```bash
-echo "source $(pwd)/Tools/setup_gazebo.bash $(pwd) $(pwd)/build_posix_sitl_default" >> ~/.bashrc
+echo "source $(pwd)/Tools/setup_gazebo.bash $(pwd) $(pwd)/build/posix_sitl_default" >> ~/.bashrc
 echo "export ROS_PACKAGE_PATH=\$ROS_PACKAGE_PATH:$(pwd)" >> ~/.profile
 echo "export ROS_PACKAGE_PATH=\$ROS_PACKAGE_PATH:$(pwd)/Tools/sitl_gazebo" >> ~/.profile
 ```
