@@ -18,7 +18,10 @@
 
       <visual name="visual">
         <geometry>
-          <cylinder><radius>0.006</radius><length>0.05</length></cylinder>
+          <cylinder>
+            <radius>0.006</radius>
+            <length>0.01</length>
+          </cylinder>
         </geometry>
         <material>
           <script>Gazebo/Black</script>
