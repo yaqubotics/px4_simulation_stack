@@ -37,9 +37,9 @@ param set RTL_RETURN_ALT 30.000000000000000000
 param set MIS_TAKEOFF_ALT 3.5
 param set SITL_UDP_PRT 14560
 
-param set MC_ROLL_P 		2
-param set MC_PITCH_P		2
-param set MC_YAW_P	 		0
+param set MC_ROLL_P 		3
+param set MC_PITCH_P		3
+param set MC_YAW_P	 		7.5
 
 param set MC_ROLLRATE_P		0.1
 param set MC_PITCHRATE_P	0.015
@@ -49,7 +49,7 @@ param set MC_ROLLRATE_I		0.003
 param set MC_PITCHRATE_I	0.005
 param set MC_YAWRATE_I		0
 
-param set MC_ROLLRATE_D		0.0025
+param set MC_ROLLRATE_D		0.0015
 param set MC_PITCHRATE_D	0.0015
 param set MC_YAWRATE_D		0
 
