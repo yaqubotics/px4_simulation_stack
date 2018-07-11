@@ -80,3 +80,7 @@ In client machine, run
 ```bash
 roslaunch px4_simulation_stack gzclient.launch
 ```
+
+## Launch Files
+In order to launch `hexa_urdf_sitl.launch`, you need to put gazebo models of gazebo model database in your `GAZEBO_MODEL_PATH`.
+Gazebo models of gazebo model database can be downloaded from https://bitbucket.org/osrf/gazebo_models/overview.
