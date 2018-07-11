@@ -27,14 +27,14 @@ It is convenient to write settings in .bashrc and .profile.
 In Firmware directory,
 ```bash
 echo "source $(pwd)/Tools/setup_gazebo.bash $(pwd) $(pwd)/build/posix_sitl_default" >> ~/.bashrc
-echo "export ROS_PACKAGE_PATH=\$ROS_PACKAGE_PATH:$(pwd)" >> ~/.profile
-echo "export ROS_PACKAGE_PATH=\$ROS_PACKAGE_PATH:$(pwd)/Tools/sitl_gazebo" >> ~/.profile
+echo "export ROS_PACKAGE_PATH=\$ROS_PACKAGE_PATH:$(pwd)" >> ~/.bashrc
+echo "export ROS_PACKAGE_PATH=\$ROS_PACKAGE_PATH:$(pwd)/Tools/sitl_gazebo" >> ~/.bashrc
 ```
   
 ### Exporting Gazebo Model Path
 In px4_simulation_stack directory,
 ```bash
-echo "export GAZEBO_MODEL_PATH=\$GAZEBO_MODEL_PATH:$(pwd)/Tools/sitl_gazebo/models" >> ~/.profile
+echo "export GAZEBO_MODEL_PATH=\$GAZEBO_MODEL_PATH:$(pwd)/Tools/sitl_gazebo/models" >> ~/.bashrc
 ```
 If you write these settings in .bashrc and .profile,  
 do not forget to source them for the first time.  
@@ -80,3 +80,13 @@ In client machine, run
 ```bash
 roslaunch px4_simulation_stack gzclient.launch
 ```
+
+## Launch Files
+
+### hexa_urdf_sitl.launch
+In order to launch `hexa_urdf_sitl.launch`, you need to put gazebo models of gazebo model database in your `GAZEBO_MODEL_PATH`.
+Gazebo models of gazebo model database can be downloaded from https://bitbucket.org/osrf/gazebo_models/overview.
+
+This launch file needs Gazebo 7.4.0 or newer to launch because of [this](http://answers.gazebosim.org/question/18014/gazebo-7-ambulance-model-and-other-invalid-mesh-filename-extension-crash/) problem.
+Installation of Gazebo from OSRF repository is described [here](http://gazebosim.org/tutorials?tut=install_ubuntu&cat=install).
+Note that ROS Kinetic should be used with Gazebo 7.x series according to [this page](http://gazebosim.org/tutorials?tut=ros_wrapper_versions).
