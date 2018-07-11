@@ -82,5 +82,11 @@ roslaunch px4_simulation_stack gzclient.launch
 ```
 
 ## Launch Files
+
+### hexa_urdf_sitl.launch
 In order to launch `hexa_urdf_sitl.launch`, you need to put gazebo models of gazebo model database in your `GAZEBO_MODEL_PATH`.
 Gazebo models of gazebo model database can be downloaded from https://bitbucket.org/osrf/gazebo_models/overview.
+
+This launch file needs Gazebo 7.4.0 or newer to launch because of [this](http://answers.gazebosim.org/question/18014/gazebo-7-ambulance-model-and-other-invalid-mesh-filename-extension-crash/) problem.
+Installation of Gazebo from OSRF repository is described [here](http://gazebosim.org/tutorials?tut=install_ubuntu&cat=install).
+Note that ROS Kinetic should be used with Gazebo 7.x series according to [this page](http://gazebosim.org/tutorials?tut=ros_wrapper_versions).
