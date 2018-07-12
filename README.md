@@ -29,7 +29,7 @@ In Firmware directory,
 echo "source $(pwd)/Tools/setup_gazebo.bash $(pwd) $(pwd)/build/posix_sitl_default" >> ~/.bashrc
 echo "export ROS_PACKAGE_PATH=\$ROS_PACKAGE_PATH:$(pwd)" >> ~/.bashrc
 echo "export ROS_PACKAGE_PATH=\$ROS_PACKAGE_PATH:$(pwd)/Tools/sitl_gazebo" >> ~/.bashrc
-echo "export GAZEBO_PLUGIN_PATH=\$GAZEBO_PLUGIN_PATH:&(pwd)/build/posix_sitl_default/build_gazebo" >> ~/.bashrc
+echo "export GAZEBO_PLUGIN_PATH=\$GAZEBO_PLUGIN_PATH:$(pwd)/build/posix_sitl_default/build_gazebo" >> ~/.bashrc
 ```
   
 ### Exporting Gazebo Model Path
