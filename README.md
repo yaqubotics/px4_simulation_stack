@@ -29,6 +29,7 @@ In Firmware directory,
 echo "source $(pwd)/Tools/setup_gazebo.bash $(pwd) $(pwd)/build/posix_sitl_default" >> ~/.bashrc
 echo "export ROS_PACKAGE_PATH=\$ROS_PACKAGE_PATH:$(pwd)" >> ~/.bashrc
 echo "export ROS_PACKAGE_PATH=\$ROS_PACKAGE_PATH:$(pwd)/Tools/sitl_gazebo" >> ~/.bashrc
+echo "export GAZEBO_PLUGIN_PATH=\$GAZEBO_PLUGIN_PATH:&(pwd)/build/posix_sitl_default/build_gazebo" >> ~/.bashrc
 ```
   
 ### Exporting Gazebo Model Path
@@ -38,7 +39,6 @@ echo "export GAZEBO_MODEL_PATH=\$GAZEBO_MODEL_PATH:$(pwd)/Tools/sitl_gazebo/mode
 ```
 If you write these settings in .bashrc and .profile,  
 do not forget to source them for the first time.  
-
 
 ## Run Gazebo Remotely
 
