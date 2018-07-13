@@ -1,6 +1,10 @@
 uorb start
 param load
-param set MAV_SYS_ID 1
+
+##### system ID num 2 ######
+param set MAV_SYS_ID 2
+
+#### common settings ########
 param set MAV_TYPE 13
 param set SYS_AUTOSTART 6001
 param set SYS_RESTART_TYPE 2
@@ -35,8 +39,17 @@ param set RTL_LAND_DELAY 0.000000000000000000
 param set RTL_MIN_DIST 3.0
 param set RTL_RETURN_ALT 30.000000000000000000
 param set MIS_TAKEOFF_ALT 3.5
-param set SITL_UDP_PRT 14560
 
+########################################
+
+##----------- PORT SETTING------------##
+## Rule num1: 14560, num(n): +100      ##
+
+param set SITL_UDP_PRT          14660
+
+#########################################
+
+##----------- PID ------------##
 param set MC_ROLL_P 		3
 param set MC_PITCH_P		3
 param set MC_YAW_P	 		7.5
@@ -65,6 +78,8 @@ param set EKF2_ANGERR_INIT 0.01
 param set EKF2_MAG_TYPE 1
 param set EKF2_RNG_A_HMAX 3.000000000000000000
 param set SDLOG_DIRS_MAX 0
+
+###### common settings ########
 replay tryapplyparams
 simulator start -s
 tone_alarm start
@@ -83,19 +98,27 @@ local_position_estimator start
 mc_pos_control start
 mc_att_control start
 mixer load /dev/pwm_output0 ROMFS/px4fmu_common/mixers/hexa_x.main.mix
-mavlink start -x -u 14556 -r 4000000
-mavlink start -x -u 14557 -r 4000000 -m onboard -o 14540
-mavlink stream -r 50 -s POSITION_TARGET_LOCAL_NED -u 14556
-mavlink stream -r 50 -s LOCAL_POSITION_NED -u 14556
-mavlink stream -r 50 -s GLOBAL_POSITION_INT -u 14556
-mavlink stream -r 50 -s ATTITUDE -u 14556
-mavlink stream -r 50 -s ATTITUDE_QUATERNION -u 14556
-mavlink stream -r 50 -s ATTITUDE_TARGET -u 14556
-mavlink stream -r 50 -s SERVO_OUTPUT_RAW_0 -u 14556
-mavlink stream -r 20 -s RC_CHANNELS -u 14556
-mavlink stream -r 50 -s HIGHRES_IMU -u 14556
-mavlink stream -r 10 -s OPTICAL_FLOW_RAD -u 14556
+
+
+
+####### mavlink settings ########
+# 
+# rule--- UAV1: default 145xx , UAV2: 146xx 
+#
+mavlink start -x -u 14656 -r 4000000
+mavlink start -x -u 14657 -r 4000000 -m onboard -o      14640
+mavlink stream -r 50 -s POSITION_TARGET_LOCAL_NED -u    14656
+mavlink stream -r 50 -s LOCAL_POSITION_NED -u           14656
+mavlink stream -r 50 -s GLOBAL_POSITION_INT -u          14656
+mavlink stream -r 50 -s ATTITUDE -u                     14656
+mavlink stream -r 50 -s ATTITUDE_QUATERNION -u          14656
+mavlink stream -r 50 -s ATTITUDE_TARGET -u              14656
+mavlink stream -r 50 -s SERVO_OUTPUT_RAW_0 -u           14656
+mavlink stream -r 20 -s RC_CHANNELS -u                  14656
+mavlink stream -r 50 -s HIGHRES_IMU -u                  14656
+mavlink stream -r 10 -s OPTICAL_FLOW_RAD -u             14656
 logger start -e -t
 vmount start
 mavlink boot_complete
 replay trystart
+

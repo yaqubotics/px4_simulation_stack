@@ -1,6 +1,7 @@
 <?xml version="1.0" ?>
+<!--2nd F550 UAV model with Mavlink UDP port 14562-->
 <sdf version='1.6'>
-  <model name='f550_rd_basic_v1'>
+  <model name='f550'>
     <link name='base_link'>
       <pose frame=''>0 0 0 0 0 0</pose>
       <inertial>
@@ -51,7 +52,8 @@
           </mesh>
         </geometry>
       </collision>
-      <collision name='base_link_fixed_joint_lump__lrf_horizontal_collision_4'>
+
+<!--  <collision name='base_link_fixed_joint_lump__lrf_horizontal_collision_4'>
         <pose frame=''>0 -0.014181 0.026 -0 0 0</pose>
         <geometry>
           <mesh>
@@ -60,6 +62,7 @@
           </mesh>
         </geometry>
       </collision>
+-->
       <collision name='base_link_fixed_joint_lump__wing1_collision_5'>
         <pose frame=''>-0.2195 -0.1705 -0.040247 0 0 2.35619</pose>
         <geometry>
@@ -144,7 +147,6 @@
           </script>
         </material>
       </visual>
-	
       <visual name='base_link_fixed_joint_lump__fcu_px2_visual_2'>
         <pose frame=''>0 0 -0.039497 3.14159 0 1.5708</pose>
         <geometry>
@@ -175,7 +177,7 @@
           </script>
         </material>
       </visual>
-      <visual name='base_link_fixed_joint_lump__lrf_horizontal_visual_4'>
+<!--   <visual name='base_link_fixed_joint_lump__lrf_horizontal_visual_4'>
         <pose frame=''>0 -0.014181 0.026 -0 0 0</pose>
         <geometry>
           <mesh>
@@ -190,6 +192,7 @@
           </script>
         </material>
       </visual>
+-->
       <visual name='base_link_fixed_joint_lump__wing1_visual_5'>
         <pose frame=''>-0.2195 -0.1705 -0.040247 0 0 2.35619</pose>
         <geometry>
@@ -281,8 +284,6 @@
         </material>
       </visual>
     </link>
-
-
     <link name='/imu_link'>
       <pose frame=''>0 0 0 0 -0 0</pose>
       <inertial>
@@ -806,7 +807,7 @@
       <imuSubTopic>/imu</imuSubTopic>
       <gpsSubTopic>/gps</gpsSubTopic>
       <mavlink_addr>INADDR_ANY</mavlink_addr>
-      <mavlink_udp_port>14560</mavlink_udp_port>
+      <mavlink_udp_port>14562</mavlink_udp_port>
       <motorSpeedCommandPubTopic>/gazebo/command/motor_speed</motorSpeedCommandPubTopic>
       <control_channels>
         <channel name='rotor1'>
@@ -879,7 +880,7 @@
       <accelerometerBiasCorrelationTime>300.0</accelerometerBiasCorrelationTime>
       <accelerometerTurnOnBiasSigma>0.196</accelerometerTurnOnBiasSigma>
     </plugin>
-
+<!--
    <include>
       <uri>model://lidar_mod</uri>
       <pose>0 -0.055 0.08 0 1.57 -1.57</pose>
@@ -911,6 +912,6 @@
         </limit>
       </axis>
     </joint>
-
+-->
   </model>
 </sdf>

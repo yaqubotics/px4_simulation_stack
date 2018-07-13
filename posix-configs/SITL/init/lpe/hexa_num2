@@ -40,7 +40,7 @@ param set MC_ROLL_P 		2
 param set MC_PITCH_P		2
 param set MC_YAW_P	 		0
 
-param set MC_ROLLRATE_P		0.1port
+param set MC_ROLLRATE_P		0.1
 param set MC_PITCHRATE_P	0.015
 param set MC_YAWRATE_P		0.1
 
