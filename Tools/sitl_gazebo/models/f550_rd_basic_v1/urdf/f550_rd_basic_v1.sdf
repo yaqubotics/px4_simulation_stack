@@ -145,18 +145,18 @@
         </material>
       </visual>
 	
-	<sensor name="wirelessReceiver" type="wireless_receiver">
-          <always_on>1</always_on>
-          <update_rate>1</update_rate>
-          <visualize>true</visualize>
-          <transceiver>
-            <min_frequency>2412.0</min_frequency>
-            <max_frequency>2484.0</max_frequency>
-            <power>14.5</power>
-            <gain>2.5</gain>
-            <sensitivity>-90.0</sensitivity>
-          </transceiver>
-        </sensor>
+	    <sensor name="wirelessReceiver" type="wireless_receiver">
+        <always_on>1</always_on>
+        <update_rate>1</update_rate>
+        <visualize>true</visualize>
+        <transceiver>
+          <min_frequency>2412.0</min_frequency>
+          <max_frequency>2484.0</max_frequency>
+          <power>14.5</power>
+          <gain>2.5</gain>
+          <sensitivity>-90.0</sensitivity>
+        </transceiver>
+      </sensor>
 
       <visual name='base_link_fixed_joint_lump__fcu_px2_visual_2'>
         <pose frame=''>0 0 -0.039497 3.14159 0 1.5708</pose>
@@ -271,7 +271,7 @@
             <uri>model://f550_rd_basic_v1/meshes/wing5.STL</uri>
           </mesh>
         </geometry>
-]        <material>
+        <material>
           <script>
             <name>Gazebo/White</name>
             <uri>file://media/materials/scripts/gazebo.material</uri>
@@ -294,7 +294,6 @@
         </material>
       </visual>
     </link>
-
 
     <link name='/imu_link'>
       <pose frame=''>0 0 0 0 -0 0</pose>
@@ -385,6 +384,7 @@
         <use_parent_model_frame>1</use_parent_model_frame>
       </axis>
     </joint>
+
     <link name='prop2'>
       <pose frame=''>0.272923 -0 0.019486 -0 -0 0</pose>
       <inertial>
@@ -440,6 +440,7 @@
         <use_parent_model_frame>1</use_parent_model_frame>
       </axis>
     </joint>
+
     <link name='prop3'>
       <pose frame=''>0.138018 -0.236703 0.019486 0 0 0</pose>
       <inertial>
@@ -495,6 +496,7 @@
         <use_parent_model_frame>1</use_parent_model_frame>
       </axis>
     </joint>
+
     <link name='prop4'>
       <pose frame=''>-0.13549 0.238163 0.019486 -0 0 -0</pose>
       <inertial>
@@ -550,6 +552,7 @@
         <use_parent_model_frame>1</use_parent_model_frame>
       </axis>
     </joint>
+
     <link name='prop5'>
       <pose frame=''>-0.137644 -0.236919 0.019486 -0 0 0.405113</pose>
       <inertial>
@@ -605,6 +608,7 @@
         <use_parent_model_frame>1</use_parent_model_frame>
       </axis>
     </joint>
+
     <link name='prop6'>
       <pose frame=''>0.135771 0.236757 0.019486 0 -0 -2.44439</pose>
       <inertial>
@@ -661,12 +665,13 @@
         <use_parent_model_frame>1</use_parent_model_frame>
       </axis>
     </joint>
-	<plugin name='rosbag' filename='librotors_gazebo_multirotor_base_plugin.so'>
+
+	  <plugin name='rosbag' filename='libgazebo_multirotor_base_plugin.so'>
       <robotNamespace/>
       <linkName>base_link</linkName>
       <rotorVelocitySlowdownSim>10</rotorVelocitySlowdownSim>
     </plugin>
-    <plugin name='prop1_model' filename='librotors_gazebo_motor_model.so'>
+    <plugin name='prop1_model' filename='libgazebo_motor_model.so'>
       <robotNamespace/>
       <jointName>p1</jointName>
       <linkName>prop1</linkName>
@@ -683,7 +688,7 @@
       <motorSpeedPubTopic>/motor_speed/0</motorSpeedPubTopic>
       <rotorVelocitySlowdownSim>10</rotorVelocitySlowdownSim>
     </plugin>
-    <plugin name='prop2_model' filename='librotors_gazebo_motor_model.so'>
+    <plugin name='prop2_model' filename='libgazebo_motor_model.so'>
       <robotNamespace/>
       <jointName>p2</jointName>
       <linkName>prop2</linkName>
@@ -700,7 +705,7 @@
       <motorSpeedPubTopic>/motor_speed/1</motorSpeedPubTopic>
       <rotorVelocitySlowdownSim>10</rotorVelocitySlowdownSim>
     </plugin>
-    <plugin name='prop3_model' filename='librotors_gazebo_motor_model.so'>
+    <plugin name='prop3_model' filename='libgazebo_motor_model.so'>
       <robotNamespace/>
       <jointName>p3</jointName>
       <linkName>prop3</linkName>
@@ -717,7 +722,7 @@
       <motorSpeedPubTopic>/motor_speed/2</motorSpeedPubTopic>
       <rotorVelocitySlowdownSim>10</rotorVelocitySlowdownSim>
     </plugin>
-    <plugin name='prop4_model' filename='librotors_gazebo_motor_model.so'>
+    <plugin name='prop4_model' filename='libgazebo_motor_model.so'>
       <robotNamespace/>
       <jointName>p4</jointName>
       <linkName>prop4</linkName>
@@ -734,7 +739,7 @@
       <motorSpeedPubTopic>/motor_speed/3</motorSpeedPubTopic>
       <rotorVelocitySlowdownSim>10</rotorVelocitySlowdownSim>
     </plugin>
-   <plugin name='prop5_model' filename='librotors_gazebo_motor_model.so'>
+   <plugin name='prop5_model' filename='libgazebo_motor_model.so'>
       <robotNamespace/>
       <jointName>p5</jointName>
       <linkName>prop5</linkName>
@@ -751,7 +756,7 @@
       <motorSpeedPubTopic>/motor_speed/4</motorSpeedPubTopic>
       <rotorVelocitySlowdownSim>10</rotorVelocitySlowdownSim>
     </plugin>
-   <plugin name='prop6_model' filename='librotors_gazebo_motor_model.so'>
+   <plugin name='prop6_model' filename='libgazebo_motor_model.so'>
       <robotNamespace/>
       <jointName>p6</jointName>
       <linkName>prop6</linkName>
@@ -769,6 +774,7 @@
       <rotorVelocitySlowdownSim>10</rotorVelocitySlowdownSim>
     </plugin>
     
+
 <!--
 <link name='/gps_link'>
       <pose frame=''>-1.3121E-06 -6.68E-05 0.0084082 0 -0 0</pose>
@@ -804,17 +810,26 @@
       </axis>
     </joint>
 -->
+
 	<plugin name='gps_plugin' filename='libgazebo_gps_plugin.so'>
       <robotNamespace/>
 	<!--  <linkName>/gps_link</linkName> -->
-      <gpsNoise>false</gpsNoise>
+      <gpsNoise>true</gpsNoise>
     </plugin>
 
+  <!-- Ground Truth -->
+  <plugin name="p3d_base_controller" filename="libgazebo_ros_p3d.so">
+    <alwaysOn>true</alwaysOn>
+    <updateRate>50.0</updateRate>
+    <bodyName>base_link</bodyName>
+    <topicName>ground_truth/state</topicName>
+    <gaussianNoise>0.01</gaussianNoise>
+    <frameName>map</frameName>
+    <xyzOffsets>0 0 0</xyzOffsets>
+    <rpyOffsets>0 0 0</rpyOffsets>
+  </plugin>
 
-
-
-
-    <plugin name='mavlink_interface' filename='librotors_gazebo_mavlink_interface.so'>
+    <plugin name='mavlink_interface' filename='libgazebo_mavlink_interface.so'>
       <robotNamespace/>
       <imuSubTopic>/imu</imuSubTopic>
       <gpsSubTopic>/gps</gpsSubTopic>
@@ -879,7 +894,8 @@
       </control_channels>
     </plugin>
     <static>0</static>
-    <plugin name='rotors_gazebo_imu_plugin' filename='librotors_gazebo_imu_plugin.so'>
+    
+    <plugin name='rotors_gazebo_imu_plugin' filename='libgazebo_imu_plugin.so'>
       <robotNamespace/>
       <linkName>/imu_link</linkName>
       <imuTopic>/imu</imuTopic>
