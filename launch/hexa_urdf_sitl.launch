@@ -39,10 +39,8 @@
     </include>
 
     <!-- Launching MAVROS -->
-<!--    <arg name="fcu_url" default="udp://localhost:14540@localhost:14557" /> -->
- <!--    <arg name="fcu_url" default="udp://localhost:14540@localhost:14557" />
-  <arg name="gcs_url" default="udp://:8850@133.87.155.216:5500" /> 
-   <arg name="gcs_url" default="" /> 
+    <arg name="fcu_url" default="udp://localhost:14540@localhost:14557" />
+    <arg name="gcs_url" default="" /> 
     <arg name="tgt_system" default="1" />
     <arg name="tgt_component" default="1" />
     <arg name="log_output" default="screen" />
@@ -56,7 +54,6 @@
 		<arg name="tgt_component" value="$(arg tgt_component)" />
 		<arg name="log_output" value="$(arg log_output)" />
     </include>
--->
    
 
     <!-- Launching laser_assembler -->
