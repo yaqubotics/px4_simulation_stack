@@ -49,11 +49,11 @@ param set MC_ROLLRATE_I		0.003
 param set MC_PITCHRATE_I	0.005
 param set MC_YAWRATE_I		0
 
-param set MC_ROLLRATE_D		0.0015
+param set MC_ROLLRATE_D		0.0025
 param set MC_PITCHRATE_D	0.0015
 param set MC_YAWRATE_D		0
 
-param set MC_YAW_FF 		0.7
+param set MC_YAW_FF 		0.01
 
 param set MPC_HOLD_MAX_Z 0.3
 param set MPC_Z_VEL_P 0.2
