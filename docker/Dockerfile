@@ -1,6 +1,6 @@
 FROM ros:kinetic
 
-MAINTAINER Takaki Ueno
+LABEL maintainer="ueknot@gmail.com"
 
 # Change environment related to ROS
 ENV ROS_PACKAGE_PATH=/root/catkin_ws/src:/opt/ros/kinetic/share \
@@ -19,7 +19,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && \
     apt-get upgrade -y && \
     apt-get install -y --no-install-recommends apt-utils
-    
+
 RUN apt-get install -y \
     git \
     python-catkin-tools \
@@ -32,7 +32,7 @@ RUN apt-get install -y \
     vim \ 
     wget
 RUN apt-get install -y default-jdk
-   
+
 # Overwrite bashrc
 RUN echo "source /opt/ros/kinetic/setup.bash" >> /root/.bashrc
 
