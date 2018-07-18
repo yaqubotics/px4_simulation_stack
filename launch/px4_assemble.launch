@@ -1,6 +1,5 @@
 <launch>
-  <node type="laser_scan_assembler" pkg="laser_assembler"
-        name="px4_assembler">
+  <node type="laser_scan_assembler" pkg="laser_assembler" name="px4_assembler">
     <remap from="scan" to="laser/scan"/>
     <param name="max_scans" type="int" value="4000" />
     <param name="fixed_frame" type="string" value="local_origin" />
