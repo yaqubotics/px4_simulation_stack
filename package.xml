@@ -6,6 +6,10 @@
 
   <maintainer email="t_ueno@eis.hokudai.ac.jp">Takaki Ueno</maintainer>
 
+  <author>Masaru Sakuma</author>
+  <author>Seiko Piotr Yamaguchi</author>
+  <author>Takaki Ueno</author>
+
   <license>MIT</license>
 
   <buildtool_depend>catkin</buildtool_depend>
