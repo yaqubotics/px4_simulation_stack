@@ -12,8 +12,7 @@
     <arg name="vehicle" default="f550_rd_basic_v1"/>
     <arg name="config_posix" default="$(arg vehicle)"/>
     <arg name="world" default="$(find px4_simulation_stack)/Tools/sitl_gazebo/worlds/hexarotor_urdf.world"/>
-<!--    <arg name="sdf" default="$(find px4_simulation_stack)/Tools/sitl_gazebo/models/$(arg vehicle)/$(arg vehicle).sdf"/> -->
-    <arg name="sdf" default="$(find px4_simulation_stack)/Tools/sitl_gazebo/models/$(arg vehicle)/urdf/$(arg vehicle).sdf"/> 
+    <!-- <arg name="sdf" default="$(find px4_simulation_stack)/Tools/sitl_gazebo/models/$(arg vehicle)/urdf/$(arg vehicle).sdf"/> --> 
 <!-- <arg name="rcS" default="$(find px4_simulation_stack)/posix-configs/SITL/init/$(arg est)/$(arg config_posix)"/> -->
     <arg name="rcS" default="$(find px4_simulation_stack)/posix-configs/SITL/init/$(arg est)/hexarotor"/>
 
