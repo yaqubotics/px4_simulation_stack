@@ -1,5 +1,12 @@
 <?xml version="1.0"?>
 
+
+<!--
+  Reference:
+    http://wiki.ros.org/hector_slam/Tutorials/SettingUpForYourRobot 
+    https://github.com/uenota/f550_launch_odroid/wiki/mapping_default.launch
+-->
+
 <launch>
   <arg name="tf_map_scanmatch_transform_frame_name" default="scanmatcher_frame"/>
   <arg name="base_frame" default="fcu"/>
