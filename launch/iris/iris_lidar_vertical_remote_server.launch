@@ -55,7 +55,7 @@
     <include file="$(find px4_simulation_stack)/launch/px4_assemble.launch" />
         
     <!-- Adding static transformation -->
-    <node name="lidar_link_tf" pkg="tf" type="static_transform_publisher" args="0 0 0 0 1.57 0 fcu lidar_link 100"/>
+    <node name="lidar_link_tf" pkg="tf" type="static_transform_publisher" args="0 0 0 0 1.57 0 base_link lidar_link 100"/>
         
 </launch>
 

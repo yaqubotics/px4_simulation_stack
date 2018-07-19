@@ -64,7 +64,7 @@
     <include file="$(find px4_simulation_stack)/launch/px4_assemble.launch" />
         
     <!-- Adding static transformation -->
-    <node name="lidar_link_tf" pkg="tf" type="static_transform_publisher" args="0 0 0 0 1.57 0 fcu lidar_link 100"/>
+    <node name="lidar_link_tf" pkg="tf" type="static_transform_publisher" args="0 0 0 0 1.57 0 base_link lidar_link 100"/>
         
 <!--    <node name="$(anon vehicle_spawn)" output="screen" pkg="gazebo_ros" type="spawn_model"
         args="-sdf -file $(arg sdf) -model $(arg vehicle) -x $(arg x) -y $(arg y) -z $(arg z) -R $(arg R) -P $(arg P) -Y $(arg Y)"/> -->
