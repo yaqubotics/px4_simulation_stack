@@ -56,8 +56,8 @@
 		<arg name="tgt_system" value="$(arg tgt_system)" />
 		<arg name="tgt_component" value="$(arg tgt_component)" />
 		<arg name="log_output" value="$(arg log_output)" />
-        <arg name="fcu_protocol" default="$(arg fcu_protocol)" />
-        <arg name="respawn_mavros" default="$(arg respawn_mavros)" />
+        <!-- <arg name="fcu_protocol" default="$(arg fcu_protocol)" /> -->
+        <!-- <arg name="respawn_mavros" default="$(arg respawn_mavros)" /> -->
     </include>
     
     <!-- Launching laser_assembler -->
