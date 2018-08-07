@@ -13,6 +13,13 @@
       </attenuation>
       <direction>-0.5 0.1 -0.9</direction>
     </light>
+
+    <include>
+      <uri>model://f550_rd_basic_v1</uri>
+      <name>f550</name>
+      <pose>0 0 0 0 0 3.14</pose>
+    </include>
+
     <model name='asphalt_plane'>
       <static>1</static>
       <link name='link'>
@@ -2120,7 +2127,8 @@
       </link>
       <static>1</static>
     </model>
-    <model name='f550'>
+
+    <!-- <model name='f550'>
       <link name='base_link'>
         <pose frame=''>0 0 0 0 -0 0</pose>
         <inertial>
@@ -3190,7 +3198,8 @@
         <accelerometerTurnOnBiasSigma>0.196</accelerometerTurnOnBiasSigma>
       </plugin>
       <pose frame=''>0 0 0 0 -0 3.14</pose>
-    </model>
+    </model> -->
+    
     <physics name='default_physics' default='0' type='ode'>
       <ode>
         <solver>
@@ -6396,7 +6405,8 @@
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
       </model>
-      <model name='f550'>
+
+      <!-- <model name='f550'>
         <pose frame=''>0.010883 -0.003046 0.108486 0.0001 5.8e-05 3.10883</pose>
         <scale>1 1 1</scale>
         <link name='/imu_link'>
@@ -6447,7 +6457,8 @@
           <acceleration>-0.772938 1.44615 -4.42131 -0.156638 0.782994 0.018812</acceleration>
           <wrench>-0.007098 0.013281 -0.040604 0 -0 0</wrench>
         </link>
-      </model>
+      </model> -->
+
       <model name='hatchback_blue'>
         <pose frame=''>-7.25331 4.79572 0 0 0 -1.58175</pose>
         <scale>1 1 1</scale>

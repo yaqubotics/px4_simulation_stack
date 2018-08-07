@@ -85,40 +85,52 @@ void fcu_vel_cb(const geometry_msgs::TwistStamped::ConstPtr& msg){
 int main(int argc, char **argv)
 {
     ros::init(argc, argv, "simple_sweep_demo");
-    ros::NodeHandle nh;
+    ros::NodeHandle nh("~");
 
     // Subscriber
     ros::Subscriber state_sub = nh.subscribe<mavros_msgs::State>
-            ("mavros/state", 10, state_cb);
+            ("/mavros/state", 10, state_cb);
     ros::Subscriber local_pos_sub = nh.subscribe<geometry_msgs::PoseStamped>
-            ("mavros/local_position/pose", 100, local_pos_cb);
+            ("/mavros/local_position/pose", 100, local_pos_cb);
     ros::Subscriber curr_gpos_sub = nh.subscribe<sensor_msgs::NavSatFix>
-            ("mavros/global_position/global", 10, curr_gpos_cb);
+            ("/mavros/global_position/global", 10, curr_gpos_cb);
     ros::Subscriber fcu_vel_sub = nh.subscribe<geometry_msgs::TwistStamped>
-            ("mavros/local_position/velocity", 100, fcu_vel_cb);
+            ("/mavros/local_position/velocity", 100, fcu_vel_cb);
 
     // Publisher
     ros::Publisher target_pos_pub = nh.advertise<geometry_msgs::PoseStamped>
-            ("mavros/setpoint_position/local", 10);
+            ("/mavros/setpoint_position/local", 10);
     ros::Publisher point_cloud_pub = nh.advertise<sensor_msgs::PointCloud2>
-            ("cloud", 10);
+            ("/cloud", 10);
 
     // Service Client
     ros::ServiceClient arming_client = nh.serviceClient<mavros_msgs::CommandBool>
-            ("mavros/cmd/arming");
+            ("/mavros/cmd/arming");
     ros::ServiceClient set_hp_client = nh.serviceClient<mavros_msgs::CommandHome>
-            ("mavros/cmd/set_home");
+            ("/mavros/cmd/set_home");
     ros::ServiceClient takeoff_client = nh.serviceClient<mavros_msgs::CommandTOL>
-            ("mavros/cmd/takeoff");
+            ("/mavros/cmd/takeoff");
     ros::ServiceClient landing_client = nh.serviceClient<mavros_msgs::CommandTOL>
-            ("mavros/cmd/land");
+            ("/mavros/cmd/land");
     ros::ServiceClient set_mode_client = nh.serviceClient<mavros_msgs::SetMode>
-            ("mavros/set_mode");
+            ("/mavros/set_mode");
     ros::ServiceClient pc_gen_client = nh.serviceClient<laser_assembler::AssembleScans2>
-            ("assemble_scans2");
+            ("/assemble_scans2");
+
+    // Takeoff height
+    float takeoff_height;
+    nh.param<float>("takeoff_height", takeoff_height, 5.5);
+
+    ROS_INFO("Takeoff height: %f", takeoff_height);
+
+    // Flight length
+    float flight_length;
+    nh.param<float>("flight_length", flight_length, 20.0);
+
+    ROS_INFO("Flight Length: %f", flight_length);
 
     // wait for laser assembler
-    ros::service::waitForService("assemble_scans");
+    ros::service::waitForService("/assemble_scans2");
     laser_assembler::AssembleScans2 pc_gen_cmd;
 
     //the setpoint publishing rate MUST be faster than 2Hz
@@ -132,7 +144,7 @@ int main(int argc, char **argv)
 
     // wait for message arriving from /mavros/global_position/global
     ROS_INFO("Waiting for message from /mavros/global_position/global");
-    const std::string gpos_topic = "mavros/global_position/global";
+    const std::string gpos_topic = "/mavros/global_position/global";
     sensor_msgs::NavSatFix init_gpos = *ros::topic::waitForMessage<sensor_msgs::NavSatFix>(gpos_topic);
     double init_latitude = init_gpos.latitude;
     double init_longitude = init_gpos.longitude;
@@ -170,9 +182,8 @@ int main(int argc, char **argv)
     ROS_INFO("Vehicle armed.");
 
     // takeoff
-    double climb_height = 5.5;
     mavros_msgs::CommandTOL takeoff_cmd;
-    takeoff_cmd.request.altitude = init_altitude + climb_height;
+    takeoff_cmd.request.altitude = init_altitude + takeoff_height;
     takeoff_cmd.request.longitude = init_longitude;
     takeoff_cmd.request.latitude = init_latitude;
 
@@ -183,7 +194,7 @@ int main(int argc, char **argv)
         ros::spinOnce();
         rate.sleep();
     }
-    while(local_pos.pose.position.z < climb_height-0.1){
+    while(local_pos.pose.position.z < takeoff_height-0.1){
         ros::spinOnce();
         rate.sleep();
         ROS_DEBUG("Current lat: %f, lon: %f, alt: %f",curr_latitude,curr_longitude,curr_altitude);
@@ -195,8 +206,8 @@ int main(int argc, char **argv)
     // move along x axis
     geometry_msgs::PoseStamped target_pos_msg;
     target_pos_msg.pose.position.x = local_pos.pose.position.x;
-    target_pos_msg.pose.position.y = -20.0;
-    target_pos_msg.pose.position.z = climb_height;
+    target_pos_msg.pose.position.y = -flight_length;
+    target_pos_msg.pose.position.z = takeoff_height;
     target_pos_msg.pose.orientation.x = local_pos.pose.orientation.x;
     target_pos_msg.pose.orientation.y = local_pos.pose.orientation.y;
     target_pos_msg.pose.orientation.z = local_pos.pose.orientation.z;
@@ -204,7 +215,7 @@ int main(int argc, char **argv)
 
     ROS_INFO("Vehicle moving forward...");
 
-    while (local_pos.pose.position.y > -19.9){
+    while (local_pos.pose.position.y > -flight_length+0.1){
         target_pos_pub.publish(target_pos_msg);
         ros::spinOnce();
         rate.sleep();
@@ -223,7 +234,7 @@ int main(int argc, char **argv)
 
     // land
     mavros_msgs::CommandTOL landing_cmd;
-    landing_cmd.request.altitude = curr_altitude - climb_height + 0.5;
+    landing_cmd.request.altitude = curr_altitude - takeoff_height + 0.5;
     landing_cmd.request.longitude = curr_longitude;
     landing_cmd.request.latitude = curr_latitude;
 
