@@ -1,0 +1,7 @@
+<launch>
+
+    <node pkg="rviz" type="rviz" name="iris_rviz" args="-d $(find px4_simulation_stack)/launch/iris/iris_lidar_vertical.rviz" />
+
+</launch>
+
+<!-- vim: set et ft=xml fenc=utf-8 ff=unix sts=0 sw=4 ts=4 : -->

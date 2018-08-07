@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <sdf version='1.5'>
-  <model name='iris_rplidar_vertical'>
+  <model name='iris_lidar_vertical'>
 
     <include>
       <uri>model://iris</uri>
