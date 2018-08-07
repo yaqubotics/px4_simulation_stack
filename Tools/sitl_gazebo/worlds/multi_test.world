@@ -26,6 +26,82 @@
     </include>
 
     
+    <!--Wireless TX point -->
+<model name="AP1">
+      <static>true</static>
+      <pose>0 0.5 0.025 0 0 0</pose>
+      <link name="AP1_link">
+        <inertial>
+          <mass>0.1</mass>
+        </inertial>
+        <visual name="base">
+          <geometry>
+            <box>
+              <size>.05 .05 .05</size>
+            </box>
+          </geometry>
+        </visual>
+        <visual name="antenna">
+          <pose>0 0 .04 0 0 0</pose>
+          <geometry>
+            <cylinder>
+              <radius>.005</radius>
+              <length>.07</length>
+            </cylinder>
+          </geometry>
+        </visual>
+        <sensor name="wirelessTransmitter" type="wireless_transmitter">
+          <always_on>1</always_on>
+          <update_rate>1</update_rate>
+          <visualize>true</visualize>
+          <transceiver>
+            <essid>GCS1</essid>
+            <frequency>2412.0</frequency>
+            <power>15</power>
+            <gain>5</gain>
+          </transceiver>
+        </sensor>
+      </link>
+</model>
+
+<model name="AP2">
+      <static>true</static>
+      <pose>0 -0.5 0.025 0 0 0</pose>
+      <link name="AP2_link">
+        <inertial>
+          <mass>0.1</mass>
+        </inertial>
+        <visual name="base">
+          <geometry>
+            <box>
+              <size>.05 .05 .05</size>
+            </box>
+          </geometry>
+        </visual>
+        <visual name="antenna">
+          <pose>0 0 .04 0 0 0</pose>
+          <geometry>
+            <cylinder>
+              <radius>.005</radius>
+              <length>.07</length>
+            </cylinder>
+          </geometry>
+        </visual>
+        <sensor name="wirelessTransmitter" type="wireless_transmitter">
+          <always_on>1</always_on>
+          <update_rate>1</update_rate>
+          <visualize>true</visualize>
+          <transceiver>
+            <essid>GCS2</essid>
+            <frequency>2480.0</frequency>
+            <power>20</power>
+            <gain>5</gain>
+          </transceiver>
+        </sensor>
+      </link>
+</model>
+
+
 
     <include>
       <uri>model://asphalt_plane</uri>

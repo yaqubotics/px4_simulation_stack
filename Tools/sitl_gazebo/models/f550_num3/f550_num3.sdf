@@ -75,6 +75,25 @@
       </control_channels>
     </plugin>
 
+    <include>
+      <uri>model://wifi_reciver</uri>
+      <name>wifi_rec</name>
+      <pose>0 0 0 0 0 0</pose>
+    </include>
+
+
+    
+    <joint name='/rx_joint' type='revolute'>
+      <child>wifi_rec::link</child>
+      <parent>f550::base_link</parent>
+      <axis>
+        <xyz>0 0 0</xyz>
+        <limit>
+          <upper>0</upper>
+          <lower>0</lower>
+        </limit>
+      </axis>
+    </joint>
 
     </model>
 </sdf>

@@ -76,5 +76,78 @@
     </plugin>
 
 
+
+    <include>
+      <uri>model://wifi_reciver</uri>
+      <name>wifi_rec</name>
+      <pose>0 0 0 0 0 0</pose>
+    </include>
+
+
+    
+    <joint name='/rx_joint' type='revolute'>
+      <child>wifi_rec::link</child>
+      <parent>f550::base_link</parent>
+      <axis>
+        <xyz>0 0 0</xyz>
+        <limit>
+          <upper>0</upper>
+          <lower>0</lower>
+        </limit>
+      </axis>
+    </joint>
+
+  <include>
+      <uri>model://wifi_ap</uri>
+      <name>wifi_ap</name>
+      <pose>0 0 0 0 0 0</pose>
+    </include>
+
+
+    
+    <joint name='/tx_joint' type='revolute'>
+      <child>wifi_ap::link</child>
+      <parent>f550::base_link</parent>
+      <axis>
+        <xyz>0 0 0</xyz>
+        <limit>
+          <upper>0</upper>
+          <lower>0</lower>
+        </limit>
+      </axis>
+    </joint>  
+
+<include>
+      <uri>model://lidar_mod</uri>
+      <pose>0 -0.055 0.08 0 1.57 -1.57</pose>
+    </include>
+    <joint name="lidar_joint" type="fixed">
+      <child>lidar::link</child>
+      <parent>base_link</parent>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <upper>0</upper>
+          <lower>0</lower>
+        </limit>
+      </axis>
+    </joint>
+
+    <include>
+      <uri>model://flow_cam</uri>
+      <pose>0 0 -0.05 0 1.5708 1.5708</pose>
+    </include>
+    <joint name="flow_joint" type="revolute">
+      <child>camera::link</child>
+      <parent>base_link</parent>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <upper>0</upper>
+          <lower>0</lower>
+        </limit>
+      </axis>
+    </joint>
+
     </model>
 </sdf>

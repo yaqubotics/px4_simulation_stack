@@ -88,7 +88,7 @@ setpoint_accel:
 setpoint_attitude:
   reverse_throttle: false   # allow reversed throttle
   tf:
-    listen: false           # enable tf listener (disable topic subscribers)
+    listen: false          # enable tf listener (disable topic subscribers)
     frame_id: "local_origin"
     child_frame_id: "attitude"
     rate_limit: 10.0
@@ -96,7 +96,7 @@ setpoint_attitude:
 # setpoint_position
 setpoint_position:
   tf:
-    listen: false           # enable tf listener (disable topic subscribers)
+    listen: false          # enable tf listener (disable topic subscribers)
     frame_id: "local_origin"
     child_frame_id: "setpoint"
     rate_limit: 50.0
