@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
-<sdf version="1.4">
-  <model name="lidar">
+<sdf version="1.6">
+  <model name="lidar_2d">
     <link name="link">
 
       <inertial>
@@ -16,7 +16,7 @@
         </inertia>
       </inertial>
 
-      <visual name="visual">
+      <visual name="laser_visual">
         <geometry>
           <cylinder>
             <radius>0.006</radius>
@@ -24,12 +24,15 @@
           </cylinder>
         </geometry>
         <material>
-          <script>Gazebo/Black</script>
+          <script>
+            <name>Gazebo/DarkGrey</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+          </script>
         </material>
       </visual>
 
       <sensor name="laser" type="ray">
-        <pose>0 0 0 0 -1.570896 0</pose>
+        <pose>0 0 0 0 0 0</pose>
         <ray>
           <scan>
             <horizontal>
@@ -51,10 +54,10 @@
           </noise>
         </ray>
         <plugin name="LaserPlugin" filename="libgazebo_ros_laser.so">
+          <robotNamespace></robotNamespace>
 	        <topicName>/laser/scan</topicName>
 	        <frameName>lidar_link</frameName>
 	      </plugin>
-  		  <robotNamespace></robotNamespace>
         <always_on>1</always_on>
         <update_rate>40</update_rate>
         <visualize>true</visualize>
