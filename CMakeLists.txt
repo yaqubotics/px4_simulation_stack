@@ -59,3 +59,12 @@ add_custom_target(f550_rd
                   ALL cp ${PACK_ROMFS_DIR}/init.d-posix/60010_F550_rd ${ROS_ROMFS_DIR}/init.d-posix/)
 add_custom_target(f550
                   ALL cp ${PACK_ROMFS_DIR}/init.d-posix/60030_F550 ${ROS_ROMFS_DIR}/init.d-posix/)
+
+# Doxygen document generation
+find_package(Doxygen)
+if(DOXYGEN_FOUND)
+add_custom_target(gen_doc ALL
+        COMMAND ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+        VERBATIM )
+endif()
