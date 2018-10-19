@@ -7,6 +7,7 @@
 // C/C++ libraries
 #include <cmath>
 #include <string>
+#include <cstdlib>
 
 // roscpp
 #include <ros/ros.h>
@@ -30,6 +31,11 @@
 #include <mavros_msgs/CommandTOL.h>
 #include <mavros_msgs/CommandHome.h>
 
+// pcl
+#include <pcl/io/pcd_io.h>
+#include <pcl/point_types.h>
+
+#include <pcl_conversions/pcl_conversions.h>
 
 //! Storage for vehicle state
 mavros_msgs::State current_state;
@@ -62,7 +68,7 @@ double curr_longitude;
 double curr_altitude;
 /**
 * @brief Callback function for global position subscriber
-* @param msg Incoming message
+* @param msgptr Incoming message
 */
 void curr_gpos_cb(const sensor_msgs::NavSatFix::ConstPtr& msgptr){
     sensor_msgs::NavSatFix msg = *msgptr;
@@ -203,7 +209,7 @@ int main(int argc, char **argv)
 
     pc_gen_cmd.request.begin = ros::Time::now();
 
-    // move along x axis
+    // move along y axis
     geometry_msgs::PoseStamped target_pos_msg;
     target_pos_msg.pose.position.x = local_pos.pose.position.x;
     target_pos_msg.pose.position.y = -flight_length;
@@ -258,12 +264,30 @@ int main(int argc, char **argv)
     ROS_INFO("Vehicle disarmed");
 
     if (pc_gen_client.call(pc_gen_cmd)){
-        ROS_INFO("Got cloud with %lu points.", pc_gen_cmd.response.cloud.data.size());
+
+        sensor_msgs::PointCloud2 ros_cloud = pc_gen_cmd.response.cloud;
+
+        ROS_INFO("Got cloud with %lu points.", ros_cloud.data.size());
         for(int i=0; i<10; ++i){
-            point_cloud_pub.publish(pc_gen_cmd.response.cloud);
+            point_cloud_pub.publish(ros_cloud);
             ros::spinOnce();
             rate.sleep();
         }
+
+        // convert ROS pointcloud2 to PCL pointcloud
+        pcl::PointCloud<pcl::PointXYZ> pcl_cloud;
+        pcl::fromROSMsg(ros_cloud, pcl_cloud);
+
+        // store pointcloud in $HOME
+        std::string home_dir = std::getenv("HOME");
+        try{
+            pcl::io::savePCDFileASCII(home_dir+"/sweep.pcd", pcl_cloud);
+            ROS_INFO("Pointcloud saved to \"$HOME/sweep.pcd\".");
+        }catch(const pcl::IOException& e){
+            ROS_ERROR("%s", e.what());
+            return 1;
+        }
+
     }else{
         ROS_INFO("Service \"assemble_scan\" call failed.");
     }

@@ -1,0 +1,21 @@
+<launch>
+
+    <arg name="vehicle" default="F550_rd"/>
+    <arg name="world" default="$(find px4_simulation_stack)/Tools/sitl_gazebo/worlds/j153.world"/>
+
+    <include file="$(find px4_simulation_stack)/launch/hexa/hexa_sitl.launch">
+      <arg name="vehicle" value="$(arg vehicle)" />
+      <arg name="world" value="$(arg world)" />
+      <arg name="use_xacro" value="false" />
+      <arg name="z" value="1"/>
+    </include>
+
+    <!-- Launching laser_assembler -->
+    <include file="$(find px4_simulation_stack)/launch/laser/px4_assemble.launch" />
+
+    <!-- Adding static transformation -->
+    <node name="lidar_link_tf" pkg="tf" type="static_transform_publisher" args="0 0 0 0 3.14 0 fcu lidar_link 100"/>
+
+</launch>
+
+<!-- vim: set et ft=xml fenc=utf-8 ff=unix sts=0 sw=4 ts=4 : -->

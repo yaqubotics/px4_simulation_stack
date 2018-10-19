@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<launch>
+
+  <arg name="x" default="0"/>
+  <arg name="y" default="0"/>
+  <arg name="z" default="0"/>
+  <arg name="R" default="0"/>
+  <arg name="P" default="0"/>
+  <arg name="Y" default="0"/>
+
+  <!-- vehcile model and config -->
+  <arg name="est" default="ekf2"/>
+  <arg name="vehicle" default="F550"/>
+  <arg name="ID" default="1"/>
+  <env name="PX4_SIM_MODEL" value="$(arg vehicle)" />
+  <env name="PX4_ESTIMATOR" value="$(arg est)" />
+  <arg name="mavlink_udp_port" default="14560"/>
+
+  <!-- generate urdf vehicle model -->
+  <arg name="xacro_file" default="$(find px4_simulation_stack)/Tools/sitl_gazebo/models/$(arg vehicle)/xacro/$(arg vehicle).xacro"/>
+  <arg name="cmd" default="$(find xacro)/xacro $(arg xacro_file) mavlink_udp_port:=$(arg mavlink_udp_port) --inorder"/>
+
+  <include file="$(find px4)/launch/single_vehicle_spawn.launch">
+      <arg name="x" value="$(arg x)" />
+      <arg name="y" value="$(arg y)" />
+      <arg name="z" value="$(arg z)" />
+      <arg name="R" value="$(arg R)" />
+      <arg name="P" value="$(arg P)" />
+      <arg name="Y" value="$(arg Y)" />
+
+      <arg name="est" value="$(arg est)"/>
+      <arg name="vehicle" value="$(arg vehicle)"/>
+      <arg name="ID" value="$(arg ID)"/>
+      <arg name="mavlink_udp_port" value="$(arg mavlink_udp_port)"/>
+      <arg name="cmd" value="$(arg cmd)"/>
+  </include>
+
+</launch>
