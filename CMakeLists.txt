@@ -13,6 +13,12 @@ find_package(catkin REQUIRED COMPONENTS
 )
 
 find_package(PCL 1.7 REQUIRED)
+
+find_package(gazebo REQUIRED)
+if("${GAZEBO_VERSION}" VERSION_LESS "7.4")
+  message(FATAL_ERROR "Gazebo 7.4 or later is required.")
+endif()
+
 catkin_package()
 
 include_directories(
