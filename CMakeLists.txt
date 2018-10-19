@@ -13,6 +13,7 @@ find_package(catkin REQUIRED COMPONENTS
 )
 
 find_package(PCL 1.7 REQUIRED)
+find_package(octomap REQUIRED)
 
 find_package(gazebo REQUIRED)
 if("${GAZEBO_VERSION}" VERSION_LESS "7.4")
@@ -25,10 +26,12 @@ include_directories(
 # include
   ${catkin_INCLUDE_DIRS}
   ${PCL_INCLUDE_DIRS}
+  ${OCTOMAP_INCLUDE_DIRS}
 )
 
 link_directories(${PCL_LIBRARY_DIRS})
 
+link_libraries(${OCTOMAP_LIBRARIES})
 
 add_definitions(${PCL_DEFINITIONS})
 
