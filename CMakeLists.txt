@@ -42,3 +42,20 @@ target_link_libraries(simple_sweep_demo
 )
 target_link_libraries(offb_node ${catkin_LIBRARIES})
 target_link_libraries(rc_converter ${catkin_LIBRARIES})
+
+# Airframe file paths
+if($ENV{ROS_HOME})
+  set(ROS_ROMFS_DIR $ENV{ROS_HOME}/etc)
+else()
+  set(ROS_ROMFS_DIR $ENV{HOME}/.ros/etc)
+endif()
+
+set(PACK_ROMFS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/ROMFS/px4fmu_common)
+
+# copy airframes to ROS_ROMFS_DIR
+add_custom_target(iris_lidar_vertical
+                  ALL cp ${PACK_ROMFS_DIR}/init.d-posix/10050_iris_lidar_vertical ${ROS_ROMFS_DIR}/init.d-posix/)
+add_custom_target(f550_rd
+                  ALL cp ${PACK_ROMFS_DIR}/init.d-posix/60010_F550_rd ${ROS_ROMFS_DIR}/init.d-posix/)
+add_custom_target(f550
+                  ALL cp ${PACK_ROMFS_DIR}/init.d-posix/60030_F550 ${ROS_ROMFS_DIR}/init.d-posix/)
