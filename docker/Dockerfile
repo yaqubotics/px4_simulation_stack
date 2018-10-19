@@ -29,7 +29,7 @@ RUN apt-get install -y \
     software-properties-common \
     sudo \
     unzip \
-    vim \ 
+    vim \
     wget
 RUN apt-get install -y default-jdk
 
