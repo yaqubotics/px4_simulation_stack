@@ -71,7 +71,7 @@ local_position:
     send: true
     frame_id: "map"
     child_frame_id: "base_link"
-    send_fcu: false
+    send_fcu: true
 
 # param
 # None, used for FCU params
@@ -175,7 +175,7 @@ fake_gps:
   fix_type: 3             # type of GPS fix (default: 3D)
   tf:
     listen: false
-    send: false           # send TF?
+    send: true            # send TF?
     frame_id: "map"       # TF frame_id
     child_frame_id: "fix" # TF child_frame_id
     rate_limit: 10.0      # TF rate
