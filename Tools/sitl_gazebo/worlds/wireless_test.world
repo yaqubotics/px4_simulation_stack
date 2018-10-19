@@ -7,7 +7,7 @@
     </include>
 	<!--f550 UAV model connected to default ports -->
 	<include>
-      <uri>model://f550_wireless</uri>
+      <uri>model://F550_wireless</uri>
       <name>f550_wl</name>
       <pose>0 0 0 0 0 3.14</pose>
     </include>
