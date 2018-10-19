@@ -4,7 +4,7 @@
   <version>1.0.0</version>
   <description>The px4_simulation_stack package</description>
 
-  <maintainer email="t_ueno@eis.hokudai.ac.jp">Takaki Ueno</maintainer>
+  <maintainer email="ueknot@gmail.com">Takaki Ueno</maintainer>
 
   <author>Masaru Sakuma</author>
   <author>Seiko Piotr Yamaguchi</author>
