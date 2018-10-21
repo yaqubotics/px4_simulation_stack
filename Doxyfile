@@ -142,7 +142,11 @@ FILE_PATTERNS          = *.c \
                          *.qsf \
                          *.as \
                          *.js \
-                         *.launch
+                         *.launch \
+                         *.world \
+                         *.config \
+                         *.yaml \
+                         *.sdf
 RECURSIVE              = YES
 EXCLUDE                = 
 EXCLUDE_SYMLINKS       = NO
