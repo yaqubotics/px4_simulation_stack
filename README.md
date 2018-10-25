@@ -4,7 +4,7 @@ Package for PX4 SITL Gazebo simulation.
 Documentation is available on [github pages](https://uenota.github.io/px4_simulation_stack/).
 
 ## Compatible version of PX4 Firmware
-The master branch is not compatible with the master of [PX4 Firmware](https://github.com/PX4/Firmware).
+The master branch may not be compatible with the latest master or release of [PX4 Firmware](https://github.com/PX4/Firmware).  
 Please see [releases](https://github.com/uenota/px4_simulation_stack/releases) page for compatible commit.
 
 ## File List
