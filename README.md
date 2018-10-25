@@ -1,6 +1,15 @@
 # px4_simulation_stack
 Package for PX4 SITL Gazebo simulation.  
 
+Documentation is available on [github pages](https://uenota.github.io/px4_simulation_stack/).
+
+## Compatible version of PX4 Firmware
+The master branch is not compatible with the master of [PX4 Firmware](https://github.com/PX4/Firmware).
+Please see [releases](https://github.com/uenota/px4_simulation_stack/releases) page for compatible commit.
+
+## File List
+You can see file list from https://uenota.github.io/px4_simulation_stack/files.html.
+
 ## Docker
 ### Build Image
 ```bash
@@ -81,10 +90,10 @@ In client machine, run
 roslaunch px4_simulation_stack gzclient.launch
 ```
 
-## Launch Files
+## Notes about Launch Files
 
-### hexa_urdf_sitl.launch
-In order to launch `hexa_urdf_sitl.launch`, you need to put gazebo models of gazebo model database in your `GAZEBO_MODEL_PATH`.
+### hexa_j153.launch
+In order to launch `hexa_j153.launch`, you need to put gazebo models of gazebo model database in your `GAZEBO_MODEL_PATH`.
 Gazebo models of gazebo model database can be downloaded from https://bitbucket.org/osrf/gazebo_models/overview.
 
 This launch file needs Gazebo 7.4.0 or newer to launch because of [this](http://answers.gazebosim.org/question/18014/gazebo-7-ambulance-model-and-other-invalid-mesh-filename-extension-crash/) problem.
