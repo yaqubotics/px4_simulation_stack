@@ -10,9 +10,9 @@
 
     <!-- Posix SITL environment launch script -->
     <arg name="est" default="ekf2"/>
-    <arg name="vehicle" default="iris_lidar_vertical"/>
+    <arg name="vehicle" default="iris"/>
     <arg name="world" default="$(find mavlink_sitl_gazebo)/worlds/empty.world"/>
-    <arg name="sdf" default="$(find px4_simulation_stack)/Tools/sitl_gazebo/models/$(arg vehicle)/$(arg vehicle).sdf"/>
+    <arg name="sdf" default="$(find px4)/Tools/sitl_gazebo/models/$(arg vehicle)/$(arg vehicle).sdf"/>
 
     <arg name="debug" default="false"/>
     <arg name="verbose" default="true"/>
