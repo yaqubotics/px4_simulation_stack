@@ -2,11 +2,11 @@
 <launch>
 
     <arg name="vehicle" default="iris_lidar_vertical"/>
-    <arg name="sdf" default="$(find px4_simulation_stack)/Tools/sitl_gazebo/models/$(arg vehicle)/$(arg vehicle).sdf"/> 
+    <arg name="sdf" default="$(find px4_simulation_stack)/Tools/sitl_gazebo/models/$(arg vehicle)/model.sdf"/>
 
     <arg name="verbose" default="false"/>
 
-    <include file="$(find px4_simulation_stack)/launch/iris/iris_sitl_remote_server.launch" >
+    <include file="$(find px4_simulation_stack)/launch/sitl/mavros_posix_sitl_remote_server.launch" >
         <arg name="vehicle" value="$(arg vehicle)" />
         <arg name="sdf" value="$(arg sdf)" />
         <arg name="verbose" value="$(arg verbose)" />
