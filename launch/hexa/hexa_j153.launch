@@ -1,14 +1,17 @@
 <launch>
 
     <arg name="vehicle" default="F550_rd"/>
-    <arg name="world" default="$(find px4_simulation_stack)/Tools/sitl_gazebo/worlds/j153.world"/>
+    <arg name="verbose" default="false" />
 
-    <include file="$(find px4_simulation_stack)/launch/hexa/hexa_sitl.launch">
-      <arg name="vehicle" value="$(arg vehicle)" />
-      <arg name="world" value="$(arg world)" />
-      <arg name="use_xacro" value="false" />
-      <arg name="z" value="1"/>
+    <include file="$(find px4_simulation_stack)/launch/sitl/mavros_posix_sitl_remote_server.launch">
+        <arg name="vehicle" value="$(arg vehicle)" />
+        <arg name="world" value="$(find px4_simulation_stack)/Tools/sitl_gazebo/worlds/j153.world"/>
+        <arg name="use_xacro" value="false"/>
+        <arg name="verbose" value="$(arg verbose)" />
+        <arg name="z" value="1"/>
     </include>
+
+    <include file="$(find px4_simulation_stack)/launch/gazebo/gzclient.launch" />
 
     <!-- Launching laser_assembler -->
     <include file="$(find px4_simulation_stack)/launch/laser/px4_assemble.launch" />
