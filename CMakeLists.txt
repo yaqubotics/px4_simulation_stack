@@ -1,4 +1,6 @@
 cmake_minimum_required(VERSION 2.8.3)
+cmake_policy(SET CMP0054 NEW)
+
 project(px4_simulation_stack)
 
 add_compile_options(-std=c++11)
@@ -48,20 +50,27 @@ target_link_libraries(rc_converter ${catkin_LIBRARIES})
 
 # Airframe file paths
 if($ENV{ROS_HOME})
-  set(ROS_ROMFS_DIR $ENV{ROS_HOME}/etc)
+  set(ROS_ROMFS_DIR "$ENV{ROS_HOME}/etc")
 else()
-  set(ROS_ROMFS_DIR $ENV{HOME}/.ros/etc)
+  set(ROS_ROMFS_DIR "$ENV{HOME}/.ros/etc")
 endif()
 
 set(PACK_ROMFS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/ROMFS/px4fmu_common)
 
-# copy airframes to ROS_ROMFS_DIR
-add_custom_target(iris_lidar_vertical
-                  ALL cp ${PACK_ROMFS_DIR}/init.d-posix/10050_iris_lidar_vertical ${ROS_ROMFS_DIR}/init.d-posix/)
-add_custom_target(f550_rd
-                  ALL cp ${PACK_ROMFS_DIR}/init.d-posix/60010_F550_rd ${ROS_ROMFS_DIR}/init.d-posix/)
-add_custom_target(f550
-                  ALL cp ${PACK_ROMFS_DIR}/init.d-posix/60030_F550 ${ROS_ROMFS_DIR}/init.d-posix/)
+if(NOT EXISTS ${ROS_ROMFS_DIR}/init.d-posix/10050_iris_lidar_vertical)
+  add_custom_target(iris_lidar_vertical
+                    ALL ln -s ${PACK_ROMFS_DIR}/init.d-posix/10050_iris_lidar_vertical ${ROS_ROMFS_DIR}/init.d-posix/)
+endif()
+
+if(NOT EXISTS ${ROS_ROMFS_DIR}/init.d-posix/60010_F550_rd)
+  add_custom_target(f550_rd
+                    ALL ln -s ${PACK_ROMFS_DIR}/init.d-posix/60010_F550_rd ${ROS_ROMFS_DIR}/init.d-posix/)
+endif()
+
+if(NOT EXISTS ${ROS_ROMFS_DIR}/init.d-posix/60030_F550)
+  add_custom_target(f550
+                    ALL ln -s ${PACK_ROMFS_DIR}/init.d-posix/60030_F550 ${ROS_ROMFS_DIR}/init.d-posix/)
+endif()
 
 # Doxygen document generation
 find_package(Doxygen)
