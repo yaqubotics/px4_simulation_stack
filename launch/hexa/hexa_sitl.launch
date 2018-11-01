@@ -1,14 +1,16 @@
 <launch>
 
     <!-- Posix SITL environment launch script -->
-    <arg name="use_xacro" default="true" />
+    <arg name="use_urdf" default="true" />
     <arg name="vehicle" default="F550"/>
+    <arg name="model" default="$(find px4_simulation_stack)/Tools/sitl_gazebo/models/F550/xacro/F550.xacro" />
 
     <arg name="verbose" default="false"/>
 
     <include file="$(find px4_simulation_stack)/launch/sitl/mavros_posix_sitl_remote_server.launch">
         <arg name="vehicle" value="$(arg vehicle)" />
-        <arg name="use_xacro" value="$(arg use_xacro)"/>
+        <arg name="use_urdf" value="$(arg use_urdf)"/>
+        <arg name="model" value="$(arg model)"/>
         <arg name="verbose" value="$(arg verbose)" />
     </include>
 

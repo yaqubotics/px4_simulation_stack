@@ -29,6 +29,8 @@
   <run_depend>sensor_msgs</run_depend>
   <run_depend>laser_filters</run_depend>
   <run_depend>octomap</run_depend>
+  <run_depend>joint_state_publisher</run_depend>
+  <run_depend>robot_state_publisher</run_depend>
 
   <export>
   </export>

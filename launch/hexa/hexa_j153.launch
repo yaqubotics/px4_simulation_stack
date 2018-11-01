@@ -1,12 +1,15 @@
 <launch>
 
     <arg name="vehicle" default="F550_rd"/>
-    <arg name="verbose" default="false" />
+    <arg name="verbose" default="true" />
+    <arg name="use_urdf" default="true" />
+    <arg name="model" default="$(find px4_simulation_stack)/Tools/sitl_gazebo/models/F550_rd/F550_rd.xacro" />
 
     <include file="$(find px4_simulation_stack)/launch/sitl/mavros_posix_sitl_remote_server.launch">
         <arg name="vehicle" value="$(arg vehicle)" />
         <arg name="world" value="$(find px4_simulation_stack)/Tools/sitl_gazebo/worlds/j153.world"/>
-        <arg name="use_xacro" value="false"/>
+        <arg name="model" value="$(arg model)" />
+        <arg name="use_urdf" value="$(arg use_urdf)"/>
         <arg name="verbose" value="$(arg verbose)" />
         <arg name="z" value="1"/>
     </include>
@@ -15,9 +18,6 @@
 
     <!-- Launching laser_assembler -->
     <include file="$(find px4_simulation_stack)/launch/laser/px4_assemble.launch" />
-
-    <!-- Adding static transformation -->
-    <node name="lidar_link_tf" pkg="tf" type="static_transform_publisher" args="0 0 0 0 3.14 0 fcu lidar_link 100"/>
 
 </launch>
 
