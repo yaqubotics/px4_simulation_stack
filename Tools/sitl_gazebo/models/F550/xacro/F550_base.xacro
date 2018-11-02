@@ -422,7 +422,7 @@
   >
     <!-- ogigin -->
     <origin
-      xyz="0.001985 -0.145 -0.037997"
+      xyz="0.001985 -0.1 -0.202"
       rpy="3.14159 0 -1.5708" />
     <!-- inertial origin -->
     <origin
@@ -440,4 +440,26 @@
     <axis
       xyz="0 0 0" />
   </xacro:accessory>
+
+  <!-- GPS Holder -->
+  <!-- link -->
+  <link name="gps_holder">
+    <visual>
+      <geometry>
+        <cylinder radius="0.002" length="0.165" />
+      </geometry>
+    </visual>
+  </link>
+  <gazebo reference="gps_holder">
+    <material>Gazebo/DarkGrey</material>
+  </gazebo>
+
+  <!-- joint -->
+  <joint name="gps_holder_fix" type="fixed">
+    <origin
+      xyz="0.001985 -0.1 -0.12"
+      rpy="0 0 0" />
+    <parent link="fcu_px2"/>
+    <child link="gps_holder"/>
+  </joint>
 </robot>
