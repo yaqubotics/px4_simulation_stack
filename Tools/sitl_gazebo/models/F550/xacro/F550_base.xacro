@@ -46,17 +46,28 @@
   <xacro:property name="ccw_prop_mesh_file" value="ccw_prop.STL" />
   <xacro:property name="cw_prop_mesh_file" value="cw_prop.STL" />
   <xacro:property name="wing_mesh_scale" value="1 1 1" />
-  <xacro:property name="ccw_wing_mesh_file" value="ccw_wing.STL"/>
-  <xacro:property name="cw_wing_mesh_file" value="cw_wing.STL"/>
+  <xacro:property name="wing_mesh_file" value="wing.STL"/>
+  <xacro:property name="wing_inertia_origin" 
+  >
+    <origin
+      xyz="0.033233 0.00054387 0.012567"
+      rpy="0 0 0" />
+  </xacro:property>
   <xacro:property name="wing_inertia"
   >
     <inertia
-        ixx="0.00031708"
-        ixy="-0.00028166"
-        ixz="0"
-        iyy="0.00031709"
-        iyz="0"
-        izz="0.00057917" />
+      ixx="2.1906E-05"
+      ixy="7.962E-07"
+      ixz="-6.9968E-05"
+      iyy="0.0002878"
+      iyz="2.0567E-07"
+      izz="0.0002659" />
+  </xacro:property>
+  <xacro:property name="rotor_origin"
+  >
+    <origin
+      xyz="0.0865 0.0005 0.033"
+      rpy="0 0 0" />
   </xacro:property>
   <xacro:property name="cw_rotor_inertia"
   >
@@ -109,7 +120,7 @@
     motor_number="0"
     namespace="${namespace}"
     parent="${wing_parent}"
-    wing_mesh_file="${cw_wing_mesh_file}"
+    wing_mesh_file="${wing_mesh_file}"
     wing_mesh_scale="${wing_mesh_scale}"
     mass_wing="${mass_wing}"
     wing_color="White"
@@ -132,18 +143,14 @@
   >
     <!-- wing_origin -->
     <origin
-      xyz="-0.21950 -0.17050 -0.04025"
-      rpy="0 0 2.35619" />
+      xyz="0.1875 0 -0.0135"
+      rpy="0 0 0" />
     <!-- wing_inertia_origin -->
-    <origin
-        xyz="0.12144 -0.11968 0.038426"
-        rpy="0 0 0" />
+    <xacro:insert_block name="wing_inertia_origin" />
     <!-- wing_inertia -->
     <xacro:insert_block name="wing_inertia" />
     <!-- rotor_origin -->
-    <origin
-      xyz="0.15910 -0.08203 0.059733"
-      rpy="0 0 0" />
+    <xacro:insert_block name="rotor_origin" />
     <!-- rotor_inertia_origin -->
     <xacro:insert_block name="rotor_inertia_origin" />
     <!-- rotor_inertia -->
@@ -155,7 +162,7 @@
     motor_number="1"
     namespace="${namespace}"
     parent="${wing_parent}"
-    wing_mesh_file="${ccw_wing_mesh_file}"
+    wing_mesh_file="${wing_mesh_file}"
     wing_mesh_scale="${wing_mesh_scale}"
     mass_wing="${mass_wing}"
     wing_color="White"
@@ -178,18 +185,14 @@
   >
     <!-- wing_origin -->
     <origin
-      xyz="0.04792 0 -0.04025"
-      rpy="0 0 -0.78540" />
+      xyz="-0.1875 0 -0.0135"
+      rpy="0 0 ${pi}" />
     <!-- wing_inertia_origin -->
-    <origin
-        xyz="0.12144 0.12144 0.038426"
-        rpy="0 0 0" />
+    <xacro:insert_block name="wing_inertia_origin" />
     <!-- wing_inertia -->
     <xacro:insert_block name="wing_inertia" />
     <!-- rotor_origin -->
-    <origin
-      xyz="0.15910 0.15910 0.059733"
-      rpy="0 0 0" />
+    <xacro:insert_block name="rotor_origin" />
     <!-- rotor_inertia_origin -->
     <xacro:insert_block name="rotor_inertia_origin" />
     <!-- rotor_inertia -->
@@ -201,7 +204,7 @@
     motor_number="2"
     namespace="${namespace}"
     parent="${wing_parent}"
-    wing_mesh_file="${cw_wing_mesh_file}"
+    wing_mesh_file="${wing_mesh_file}"
     wing_mesh_scale="${wing_mesh_scale}"
     mass_wing="${mass_wing}"
     wing_color="White"
@@ -224,18 +227,14 @@
   >
     <!-- wing_origin -->
     <origin
-      xyz="0.25843 -0.10426 -0.04025"
-      rpy="0 0 -1.8326" />
+      xyz="${0.1875 * cos(2*pi/3) } ${0.1875 * sin(2*pi/3)} -0.0135"
+      rpy="0 0 ${2*pi / 3}" />
     <!-- wing_inertia_origin -->
-    <origin
-        xyz="0.12144 -0.11968 0.038426"
-        rpy="0 0 0" />
+    <xacro:insert_block name="wing_inertia_origin" />
     <!-- wing_inertia -->
     <xacro:insert_block name="wing_inertia" />
     <!-- rotor_origin -->
-    <origin
-      xyz="0.15910 -0.08203 0.059733"
-      rpy="0 0 0" />
+    <xacro:insert_block name="rotor_origin" />
     <!-- rotor_inertia_origin -->
     <xacro:insert_block name="rotor_inertia_origin" />
     <!-- rotor_inertia -->
@@ -247,7 +246,7 @@
     motor_number="3"
     namespace="${namespace}"
     parent="${wing_parent}"
-    wing_mesh_file="${ccw_wing_mesh_file}"
+    wing_mesh_file="${wing_mesh_file}"
     wing_mesh_scale="${wing_mesh_scale}"
     mass_wing="${mass_wing}"
     wing_color="Red"
@@ -270,18 +269,14 @@
   >
     <!-- wing_origin -->
     <origin
-      xyz="-0.02299 0.04331 -0.04025"
-      rpy="0 0 1.30900" />
+      xyz="${0.1875 * cos(-pi/3) } ${0.1875 * sin(-pi/3)} -0.0135"
+      rpy="0 0 ${ -pi / 3}" />
     <!-- wing_inertia_origin -->
-    <origin
-        xyz="0.12144 0.12144 0.038426"
-        rpy="0 0 0" />
+    <xacro:insert_block name="wing_inertia_origin" />
     <!-- wing_inertia -->
     <xacro:insert_block name="wing_inertia" />
     <!-- rotor_origin -->
-    <origin
-      xyz="0.15910 0.15910 0.059733"
-      rpy="0 0 0" />
+    <xacro:insert_block name="rotor_origin" />
     <!-- rotor_inertia_origin -->
     <xacro:insert_block name="rotor_inertia_origin" />
     <!-- rotor_inertia -->
@@ -293,7 +288,7 @@
     motor_number="4"
     namespace="${namespace}"
     parent="${wing_parent}"
-    wing_mesh_file="${ccw_wing_mesh_file}"
+    wing_mesh_file="${wing_mesh_file}"
     wing_mesh_scale="${wing_mesh_scale}"
     mass_wing="${mass_wing}"
     wing_color="White"
@@ -316,18 +311,14 @@
   >
     <!-- wing_origin -->
     <origin
-      xyz="-0.02514 -0.04206 -0.04025"
-      rpy="0 0 -2.87979" />
+      xyz="${0.1875 * cos(pi/3) } ${0.1875 * sin(pi/3)} -0.0135"
+      rpy="0 0 ${ pi / 3}" />
     <!-- wing_inertia_origin -->
-    <origin
-        xyz="0.12144 0.12144 0.038426"
-        rpy="0 0 0" />
+    <xacro:insert_block name="wing_inertia_origin" />
     <!-- wing_inertia -->
     <xacro:insert_block name="wing_inertia" />
     <!-- rotor_origin -->
-    <origin
-      xyz="0.15910 0.15910 0.059733"
-      rpy="0 0 0" />
+    <xacro:insert_block name="rotor_origin" />
     <!-- rotor_inertia_origin -->
     <xacro:insert_block name="rotor_inertia_origin" />
     <!-- rotor_inertia -->
@@ -339,7 +330,7 @@
     motor_number="5"
     namespace="${namespace}"
     parent="${wing_parent}"
-    wing_mesh_file="${cw_wing_mesh_file}"
+    wing_mesh_file="${wing_mesh_file}"
     wing_mesh_scale="${wing_mesh_scale}"
     mass_wing="${mass_wing}"
     wing_color="Red"
@@ -362,18 +353,14 @@
   >
     <!-- wing_origin -->
     <origin
-      xyz="-0.03913 0.27481 -0.04025"
-      rpy="0 0 0.261800" />
+      xyz="${0.1875 * cos(-2*pi/3) } ${0.1875 * sin(-2*pi/3)} -0.0135"
+      rpy="0 0 ${-2*pi / 3}" />
     <!-- wing_inertia_origin -->
-    <origin
-        xyz="0.12144 -0.11968 0.038426"
-        rpy="0 0 0" />
+    <xacro:insert_block name="wing_inertia_origin" />
     <!-- wing_inertia -->
     <xacro:insert_block name="wing_inertia" />
     <!-- rotor_origin -->
-    <origin
-      xyz="0.15910 -0.08203 0.059733"
-      rpy="0 0 0" />
+    <xacro:insert_block name="rotor_origin" />
     <!-- rotor_inertia_origin -->
     <xacro:insert_block name="rotor_inertia_origin" />
     <!-- rotor_inertia -->
@@ -383,29 +370,29 @@
   <!-- accessories -->
   <!-- FCU -->
   <xacro:accessory
-    name="fcu_px2"
-    mass="0.25"
-    mesh_file="fcu_px2.STL"
+    name="pixhawk"
+    mass="0.074008"
+    mesh_file="pixhawk.STL"
     mesh_scale="1 1 1"
     color="FlatBlack"
     parent="base_link"
   >
     <!-- ogigin -->
     <origin
-      xyz="0 0 -0.039497"
-      rpy="3.14159 0 1.5708" />
+      xyz="0 0 -0.04"
+      rpy="0 0 0" />
     <!-- inertial origin -->
-    <origin
-        xyz="0.002093 0.00024832 -0.0059171"
+      <origin
+        xyz="-9.4432E-05 -0.0024647 0.011865"
         rpy="0 0 0" />
     <!-- inertia -->
-    <inertia
-        ixx="7.9881E-06"
-        ixy="1.4254E-07"
-        ixz="9.5267E-07"
-        iyy="3.4253E-05"
-        iyz="-1.0276E-08"
-        izz="4.0844E-05" />
+      <inertia
+        ixx="3.8099E-06"
+        ixy="6.11E-09"
+        ixz="-7.5702E-08"
+        iyy="3.8198E-06"
+        iyz="2.3562E-07"
+        izz="4.7645E-08" />
     <!-- axis -->
     <axis
       xyz="0 0 0" />
@@ -413,29 +400,29 @@
 
   <!-- GPS -->
   <xacro:accessory
-    name="gps_here"
-    mass="0.0"
-    mesh_file="gps_here.STL"
+    name="here_gps"
+    mass="0.11416"
+    mesh_file="here_gps.STL"
     mesh_scale="1 1 1"
     color="DarkGrey"
-    parent="fcu_px2"
+    parent="base_link"
   >
     <!-- ogigin -->
     <origin
-      xyz="0.001985 -0.1 -0.202"
-      rpy="3.14159 0 -1.5708" />
+      xyz="0.1 0 0.16"
+      rpy="0 0 0" />
     <!-- inertial origin -->
     <origin
-        xyz="0 0 0.0084082"
-        rpy="0 0 0" />
+      xyz="-1.3121E-06 -6.68E-05 0.0084082"
+      rpy="0 0 0" />
     <!-- inertia -->
     <inertia
-        ixx="2.9868E-05"
-        ixy="0"
-        ixz="0"
-        iyy="2.9724E-05"
-        iyz="4.7726E-08"
-        izz="5.5952E-05" />
+      ixx="2.98678228033835E-05"
+      ixy="-1.04111821878108E-10"
+      ixz="5.05387750838802E-11"
+      iyy="2.97244934804792E-05"
+      iyz="4.77263126398615E-08"
+      izz="5.59519257601009E-05" />
     <!-- axis -->
     <axis
       xyz="0 0 0" />
@@ -457,9 +444,9 @@
   <!-- joint -->
   <joint name="gps_holder_fix" type="fixed">
     <origin
-      xyz="0.001985 -0.1 -0.12"
+      xyz="0.1 0 0.08"
       rpy="0 0 0" />
-    <parent link="fcu_px2"/>
+    <parent link="base_link"/>
     <child link="gps_holder"/>
   </joint>
 </robot>
