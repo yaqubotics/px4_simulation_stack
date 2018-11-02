@@ -57,20 +57,12 @@ endif()
 
 set(PACK_ROMFS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/ROMFS/px4fmu_common)
 
-if(NOT EXISTS ${ROS_ROMFS_DIR}/init.d-posix/10050_iris_lidar_vertical)
-  add_custom_target(iris_lidar_vertical
-                    ALL ln -s ${PACK_ROMFS_DIR}/init.d-posix/10050_iris_lidar_vertical ${ROS_ROMFS_DIR}/init.d-posix/)
-endif()
-
-if(NOT EXISTS ${ROS_ROMFS_DIR}/init.d-posix/60010_F550_rd)
-  add_custom_target(f550_rd
-                    ALL ln -s ${PACK_ROMFS_DIR}/init.d-posix/60010_F550_rd ${ROS_ROMFS_DIR}/init.d-posix/)
-endif()
-
-if(NOT EXISTS ${ROS_ROMFS_DIR}/init.d-posix/60030_F550)
-  add_custom_target(f550
-                    ALL ln -s ${PACK_ROMFS_DIR}/init.d-posix/60030_F550 ${ROS_ROMFS_DIR}/init.d-posix/)
-endif()
+add_custom_target(iris_lidar_vertical
+                  ALL ln -s -b ${PACK_ROMFS_DIR}/init.d-posix/10050_iris_lidar_vertical ${ROS_ROMFS_DIR}/init.d-posix/)
+add_custom_target(f550_rd
+                  ALL ln -s -b ${PACK_ROMFS_DIR}/init.d-posix/60010_F550_rd ${ROS_ROMFS_DIR}/init.d-posix/)
+add_custom_target(f550
+                  ALL ln -s -b ${PACK_ROMFS_DIR}/init.d-posix/60030_F550 ${ROS_ROMFS_DIR}/init.d-posix/)
 
 # Doxygen document generation
 find_package(Doxygen)
