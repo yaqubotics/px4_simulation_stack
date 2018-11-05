@@ -56,14 +56,16 @@ endif()
 
 set(PACK_ROMFS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/ROMFS/px4fmu_common)
 
-if(EXISTS ${ROS_ROMFS_DIR})
-  add_custom_target(iris_lidar_vertical
-                    ALL ln -s -b ${PACK_ROMFS_DIR}/init.d-posix/10050_iris_lidar_vertical ${ROS_ROMFS_DIR}/init.d-posix/)
-  add_custom_target(f550_rd
-                    ALL ln -s -b ${PACK_ROMFS_DIR}/init.d-posix/60010_F550_rd ${ROS_ROMFS_DIR}/init.d-posix/)
-  add_custom_target(f550
-                    ALL ln -s -b ${PACK_ROMFS_DIR}/init.d-posix/60030_F550 ${ROS_ROMFS_DIR}/init.d-posix/)
+if(NOT EXISTS ${ROS_ROMFS_DIR})
+  message(FATAL_ERROR "PX4 Firmware is REQUIRED.\nInstall and run 'make posix_sitl_default gazebo'.\nIf this persists after installation, make symbolic link from Firmware/ROMFS/px4fmu_common to ~/.ros/etc")
 endif()
+
+add_custom_target(iris_lidar_vertical
+                  ALL ln -s -b ${PACK_ROMFS_DIR}/init.d-posix/10050_iris_lidar_vertical ${ROS_ROMFS_DIR}/init.d-posix/)
+add_custom_target(f550_rd
+                  ALL ln -s -b ${PACK_ROMFS_DIR}/init.d-posix/60010_F550_rd ${ROS_ROMFS_DIR}/init.d-posix/)
+add_custom_target(f550
+                  ALL ln -s -b ${PACK_ROMFS_DIR}/init.d-posix/60030_F550 ${ROS_ROMFS_DIR}/init.d-posix/)
 
 # Doxygen document generation
 find_package(Doxygen)
