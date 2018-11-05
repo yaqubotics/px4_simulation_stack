@@ -1,5 +1,4 @@
 cmake_minimum_required(VERSION 2.8.3)
-cmake_policy(SET CMP0054 NEW)
 
 project(px4_simulation_stack)
 
@@ -57,12 +56,14 @@ endif()
 
 set(PACK_ROMFS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/ROMFS/px4fmu_common)
 
-add_custom_target(iris_lidar_vertical
-                  ALL ln -s -b ${PACK_ROMFS_DIR}/init.d-posix/10050_iris_lidar_vertical ${ROS_ROMFS_DIR}/init.d-posix/)
-add_custom_target(f550_rd
-                  ALL ln -s -b ${PACK_ROMFS_DIR}/init.d-posix/60010_F550_rd ${ROS_ROMFS_DIR}/init.d-posix/)
-add_custom_target(f550
-                  ALL ln -s -b ${PACK_ROMFS_DIR}/init.d-posix/60030_F550 ${ROS_ROMFS_DIR}/init.d-posix/)
+if(EXISTS ${ROS_ROMFS_DIR})
+  add_custom_target(iris_lidar_vertical
+                    ALL ln -s -b ${PACK_ROMFS_DIR}/init.d-posix/10050_iris_lidar_vertical ${ROS_ROMFS_DIR}/init.d-posix/)
+  add_custom_target(f550_rd
+                    ALL ln -s -b ${PACK_ROMFS_DIR}/init.d-posix/60010_F550_rd ${ROS_ROMFS_DIR}/init.d-posix/)
+  add_custom_target(f550
+                    ALL ln -s -b ${PACK_ROMFS_DIR}/init.d-posix/60030_F550 ${ROS_ROMFS_DIR}/init.d-posix/)
+endif()
 
 # Doxygen document generation
 find_package(Doxygen)
