@@ -31,5 +31,6 @@
   <exec_depend>gazebo_ros</exec_depend>
 
   <export>
+    <gazebo_ros gazebo_model_path="${prefix}/Tools/sitl_gazebo/models" />
   </export>
 </package>

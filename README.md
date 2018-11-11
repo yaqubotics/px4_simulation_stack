@@ -42,6 +42,8 @@ echo "export GAZEBO_PLUGIN_PATH=\$GAZEBO_PLUGIN_PATH:$(pwd)/build/posix_sitl_def
 ```
   
 ### Exporting Gazebo Model Path
+You need to set environment variable if you want to insert models in this pacakge from Gazebo GUI.
+
 In px4_simulation_stack directory,
 ```bash
 echo "export GAZEBO_MODEL_PATH=\$GAZEBO_MODEL_PATH:$(pwd)/Tools/sitl_gazebo/models" >> ~/.bashrc
