@@ -11,6 +11,7 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   sensor_msgs
   pcl_conversions
+  xacro
 )
 
 find_package(PCL 1.7 REQUIRED)
@@ -54,12 +55,12 @@ add_airframe(${AIRFRAME_DIR}/10050_iris_lidar_vertical)
 add_airframe(${AIRFRAME_DIR}/60010_F550_rd)
 add_airframe(${AIRFRAME_DIR}/60030_F550)
 
-set(PACK_ROMFS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/ROMFS/px4fmu_common)
-
-if(NOT EXISTS ${ROS_ROMFS_DIR})
-  message(FATAL_ERROR "PX4 Firmware is REQUIRED.\nInstall and run 'make posix_sitl_default gazebo'.\nIf this persists after installation, make symbolic link from Firmware/ROMFS/px4fmu_common to ~/.ros/etc")
-endif()
-
+# build urdf
+include(cmake/build_urdf.cmake)
+set(MODEL_DIR ${CMAKE_CURRENT_SOURCE_DIR}/Tools/sitl_gazebo/models)
+build_urdf(${MODEL_DIR}/F550/xacro/F550.xacro ${MODEL_DIR}/F550/F550.urdf)
+build_urdf(${MODEL_DIR}/F550_rd/F550_rd.xacro ${MODEL_DIR}/F550_rd/F550_rd.urdf)
+build_urdf(${MODEL_DIR}/F550_wireless/F550_wireless.xacro ${MODEL_DIR}/F550_wireless/F550_wireless.urdf)
 
 # Doxygen document generation
 find_package(Doxygen)
