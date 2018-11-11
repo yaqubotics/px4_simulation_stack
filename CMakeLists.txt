@@ -47,12 +47,12 @@ target_link_libraries(simple_sweep_demo
 target_link_libraries(offb_node ${catkin_LIBRARIES})
 target_link_libraries(rc_converter ${catkin_LIBRARIES})
 
-# Airframe file paths
-if($ENV{ROS_HOME})
-  set(ROS_ROMFS_DIR "$ENV{ROS_HOME}/etc")
-else()
-  set(ROS_ROMFS_DIR "$ENV{HOME}/.ros/etc")
-endif()
+# add airframes
+include(cmake/add_airframe.cmake)
+set(AIRFRAME_DIR ${CMAKE_CURRENT_SOURCE_DIR}/ROMFS/px4fmu_common/init.d-posix)
+add_airframe(${AIRFRAME_DIR}/10050_iris_lidar_vertical)
+add_airframe(${AIRFRAME_DIR}/60010_F550_rd)
+add_airframe(${AIRFRAME_DIR}/60030_F550)
 
 set(PACK_ROMFS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/ROMFS/px4fmu_common)
 
@@ -60,12 +60,6 @@ if(NOT EXISTS ${ROS_ROMFS_DIR})
   message(FATAL_ERROR "PX4 Firmware is REQUIRED.\nInstall and run 'make posix_sitl_default gazebo'.\nIf this persists after installation, make symbolic link from Firmware/ROMFS/px4fmu_common to ~/.ros/etc")
 endif()
 
-add_custom_target(iris_lidar_vertical
-                  ALL ln -s -b ${PACK_ROMFS_DIR}/init.d-posix/10050_iris_lidar_vertical ${ROS_ROMFS_DIR}/init.d-posix/)
-add_custom_target(f550_rd
-                  ALL ln -s -b ${PACK_ROMFS_DIR}/init.d-posix/60010_F550_rd ${ROS_ROMFS_DIR}/init.d-posix/)
-add_custom_target(f550
-                  ALL ln -s -b ${PACK_ROMFS_DIR}/init.d-posix/60030_F550 ${ROS_ROMFS_DIR}/init.d-posix/)
 
 # Doxygen document generation
 find_package(Doxygen)
