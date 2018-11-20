@@ -9,9 +9,6 @@ param set SYS_RESTART_TYPE 2
 param set SYS_MC_EST_GROUP 2
 param set BAT_N_CELLS 3
 
-param set MC_ROLLRATE_P	  0.116
-param set MC_PITCHRATE_P	0.017
-
 param set NAV_DLL_ACT 0
 
 set PWM_OUT 12345678
