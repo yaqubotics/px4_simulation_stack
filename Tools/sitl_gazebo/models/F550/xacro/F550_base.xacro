@@ -17,16 +17,17 @@
   <xacro:property name="base_inertia"
   >
     <!-- units: kg･m^2 -->
-    <inertia ixx="0.0213982"
-             ixy="0"
-             ixz="0"
-             iyy="0.021956"
-             iyz="0.000340426"
-             izz="0.0398396"/>
+      <inertia
+        ixx="0.00012113"
+        ixy="-2.4623E-08"
+        ixz="1.6419E-06"
+        iyy="0.00013125"
+        iyz="6.0617E-07"
+        izz="1.8253E-05" />
   </xacro:property>
   <xacro:property name="collision_origin"
   >
-    <origin xyz="0 0 0" rpy="0 0 0" />
+    <origin xyz="0 0 0.03" rpy="0 0 0" />
   </xacro:property>
 
   <!-- rotors properties -->
@@ -47,7 +48,7 @@
   <xacro:property name="cw_prop_mesh_file" value="cw_prop.STL" />
   <xacro:property name="wing_mesh_scale" value="1 1 1" />
   <xacro:property name="wing_mesh_file" value="wing.STL"/>
-  <xacro:property name="wing_inertia_origin" 
+  <xacro:property name="wing_inertia_origin"
   >
     <origin
       xyz="0.033233 0.00054387 0.012567"
@@ -143,8 +144,8 @@
   >
     <!-- wing_origin -->
     <origin
-      xyz="0.1875 0 -0.0135"
-      rpy="0 0 0" />
+      xyz="0 -0.1875 0.026"
+      rpy="0 0 ${-pi / 2}" />
     <!-- wing_inertia_origin -->
     <xacro:insert_block name="wing_inertia_origin" />
     <!-- wing_inertia -->
@@ -185,8 +186,8 @@
   >
     <!-- wing_origin -->
     <origin
-      xyz="-0.1875 0 -0.0135"
-      rpy="0 0 ${pi}" />
+      xyz="0 0.1875 0.026"
+      rpy="0 0 ${pi / 2}" />
     <!-- wing_inertia_origin -->
     <xacro:insert_block name="wing_inertia_origin" />
     <!-- wing_inertia -->
@@ -227,8 +228,8 @@
   >
     <!-- wing_origin -->
     <origin
-      xyz="${0.1875 * cos(2*pi/3) } ${0.1875 * sin(2*pi/3)} -0.0135"
-      rpy="0 0 ${2*pi / 3}" />
+      xyz="${0.1875 * cos(pi/6)} ${0.1875 * sin(pi/6)} 0.026"
+      rpy="0 0 ${pi/6}" />
     <!-- wing_inertia_origin -->
     <xacro:insert_block name="wing_inertia_origin" />
     <!-- wing_inertia -->
@@ -269,8 +270,8 @@
   >
     <!-- wing_origin -->
     <origin
-      xyz="${0.1875 * cos(-pi/3) } ${0.1875 * sin(-pi/3)} -0.0135"
-      rpy="0 0 ${ -pi / 3}" />
+      xyz="${0.1875 * cos(-5*pi/6)} ${0.1875 * sin(-5*pi/6)} 0.026"
+      rpy="0 0 ${-5*pi/6}" />
     <!-- wing_inertia_origin -->
     <xacro:insert_block name="wing_inertia_origin" />
     <!-- wing_inertia -->
@@ -311,8 +312,8 @@
   >
     <!-- wing_origin -->
     <origin
-      xyz="${0.1875 * cos(pi/3) } ${0.1875 * sin(pi/3)} -0.0135"
-      rpy="0 0 ${ pi / 3}" />
+      xyz="${0.1875 * cos(-pi/6)} ${0.1875 * sin(-pi/6)} 0.026"
+      rpy="0 0 ${-pi/6}" />
     <!-- wing_inertia_origin -->
     <xacro:insert_block name="wing_inertia_origin" />
     <!-- wing_inertia -->
@@ -353,8 +354,8 @@
   >
     <!-- wing_origin -->
     <origin
-      xyz="${0.1875 * cos(-2*pi/3) } ${0.1875 * sin(-2*pi/3)} -0.0135"
-      rpy="0 0 ${-2*pi / 3}" />
+      xyz="${0.1875 * cos(5*pi/6)} ${0.1875 * sin(5*pi/6)} 0.026"
+      rpy="0 0 ${5*pi/6}" />
     <!-- wing_inertia_origin -->
     <xacro:insert_block name="wing_inertia_origin" />
     <!-- wing_inertia -->
@@ -379,20 +380,20 @@
   >
     <!-- ogigin -->
     <origin
-      xyz="0 0 -0.04"
+      xyz="0 0 0"
       rpy="0 0 0" />
     <!-- inertial origin -->
-      <origin
-        xyz="-9.4432E-05 -0.0024647 0.011865"
-        rpy="0 0 0" />
+    <origin
+      xyz="-0.0024647 9.4432E-05 0.011865"
+      rpy="0 0 0" />
     <!-- inertia -->
-      <inertia
-        ixx="3.8099E-06"
-        ixy="6.11E-09"
-        ixz="-7.5702E-08"
-        iyy="3.8198E-06"
-        iyz="2.3562E-07"
-        izz="4.7645E-08" />
+    <inertia
+      ixx="3.8198E-06"
+      ixy="-6.11E-09"
+      ixz="2.3562E-07"
+      iyy="3.8099E-06"
+      iyz="7.5702E-08"
+      izz="4.7645E-08" />
     <!-- axis -->
     <axis
       xyz="0 0 0" />
@@ -401,7 +402,7 @@
   <!-- GPS -->
   <xacro:accessory
     name="here_gps"
-    mass="0.11416"
+    mass="0.045664"
     mesh_file="here_gps.STL"
     mesh_scale="1 1 1"
     color="DarkGrey"
@@ -409,20 +410,20 @@
   >
     <!-- ogigin -->
     <origin
-      xyz="0.1 0 0.16"
+      xyz="0 -0.09 0.20"
       rpy="0 0 0" />
     <!-- inertial origin -->
     <origin
-      xyz="-1.3121E-06 -6.68E-05 0.0084082"
+      xyz="-6.68E-05 -0.0084082 1.31210000000051E-06"
       rpy="0 0 0" />
     <!-- inertia -->
     <inertia
-      ixx="2.98678228033835E-05"
-      ixy="-1.04111821878108E-10"
-      ixz="5.05387750838802E-11"
-      iyy="2.97244934804792E-05"
-      iyz="4.77263126398615E-08"
-      izz="5.59519257601009E-05" />
+      ixx="1.18897973921917E-05"
+      ixy="1.90905250559444E-08"
+      ixz="-4.16447287511186E-11"
+      iyy="2.23807703040404E-05"
+      iyz="2.02155100330627E-11"
+      izz="1.19471291213534E-05" />
     <!-- axis -->
     <axis
       xyz="0 0 0" />
@@ -444,7 +445,7 @@
   <!-- joint -->
   <joint name="gps_holder_fix" type="fixed">
     <origin
-      xyz="0.1 0 0.08"
+      xyz="0 -0.09 0.122"
       rpy="0 0 0" />
     <parent link="base_link"/>
     <child link="gps_holder"/>

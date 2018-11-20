@@ -16,7 +16,7 @@
       <mass value="1.5"/>
       <!-- [kg] -->
       <origin xyz="0 0 0"/>
-      <inertia ixx="0.0213982" ixy="0" ixz="0" iyy="0.021956" iyz="0.000340426" izz="0.0398396"/>
+      <inertia ixx="0.00012113" ixy="-2.4623E-08" ixz="1.6419E-06" iyy="0.00013125" iyz="6.0617E-07" izz="1.8253E-05"/>
     </inertial>
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
@@ -25,7 +25,7 @@
       </geometry>
     </visual>
     <collision>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <origin rpy="0 0 0" xyz="0 0 0.03"/>
       <geometry>
         <cylinder length="0.13" radius="0.295"/>
       </geometry>
@@ -56,7 +56,7 @@
   </gazebo>
   <!-- wing joint -->
   <joint name="wing_0_joint" type="fixed">
-    <origin rpy="0 0 0" xyz="0.1875 0 -0.0135"/>
+    <origin rpy="0 0 -1.57079632679" xyz="0 -0.1875 0.026"/>
     <axis xyz="0 0 0"/>
     <parent link="base_link"/>
     <child link="wing_0"/>
@@ -126,7 +126,7 @@
   </gazebo>
   <!-- wing joint -->
   <joint name="wing_1_joint" type="fixed">
-    <origin rpy="0 0 3.14159265359" xyz="-0.1875 0 -0.0135"/>
+    <origin rpy="0 0 1.57079632679" xyz="0 0.1875 0.026"/>
     <axis xyz="0 0 0"/>
     <parent link="base_link"/>
     <child link="wing_1"/>
@@ -196,7 +196,7 @@
   </gazebo>
   <!-- wing joint -->
   <joint name="wing_2_joint" type="fixed">
-    <origin rpy="0 0 2.09439510239" xyz="-0.09375 0.16237976321 -0.0135"/>
+    <origin rpy="0 0 0.523598775598" xyz="0.16237976321 0.09375 0.026"/>
     <axis xyz="0 0 0"/>
     <parent link="base_link"/>
     <child link="wing_2"/>
@@ -266,7 +266,7 @@
   </gazebo>
   <!-- wing joint -->
   <joint name="wing_3_joint" type="fixed">
-    <origin rpy="0 0 -1.0471975512" xyz="0.09375 -0.16237976321 -0.0135"/>
+    <origin rpy="0 0 -2.61799387799" xyz="-0.16237976321 -0.09375 0.026"/>
     <axis xyz="0 0 0"/>
     <parent link="base_link"/>
     <child link="wing_3"/>
@@ -336,7 +336,7 @@
   </gazebo>
   <!-- wing joint -->
   <joint name="wing_4_joint" type="fixed">
-    <origin rpy="0 0 1.0471975512" xyz="0.09375 0.16237976321 -0.0135"/>
+    <origin rpy="0 0 -0.523598775598" xyz="0.16237976321 -0.09375 0.026"/>
     <axis xyz="0 0 0"/>
     <parent link="base_link"/>
     <child link="wing_4"/>
@@ -406,7 +406,7 @@
   </gazebo>
   <!-- wing joint -->
   <joint name="wing_5_joint" type="fixed">
-    <origin rpy="0 0 -2.09439510239" xyz="-0.09375 -0.16237976321 -0.0135"/>
+    <origin rpy="0 0 2.61799387799" xyz="-0.16237976321 0.09375 0.026"/>
     <axis xyz="0 0 0"/>
     <parent link="base_link"/>
     <child link="wing_5"/>
@@ -477,9 +477,9 @@
   <!-- link -->
   <link name="pixhawk">
     <inertial>
-      <origin rpy="0 0 0" xyz="-9.4432E-05 -0.0024647 0.011865"/>
+      <origin rpy="0 0 0" xyz="-0.0024647 9.4432E-05 0.011865"/>
       <mass value="0.074008"/>
-      <inertia ixx="3.8099E-06" ixy="6.11E-09" ixz="-7.5702E-08" iyy="3.8198E-06" iyz="2.3562E-07" izz="4.7645E-08"/>
+      <inertia ixx="3.8198E-06" ixy="-6.11E-09" ixz="2.3562E-07" iyy="3.8099E-06" iyz="7.5702E-08" izz="4.7645E-08"/>
     </inertial>
     <visual>
       <geometry>
@@ -492,7 +492,7 @@
   </gazebo>
   <!-- joint -->
   <joint name="pixhawk_fix" type="fixed">
-    <origin rpy="0 0 0" xyz="0 0 -0.04"/>
+    <origin rpy="0 0 0" xyz="0 0 0"/>
     <parent link="base_link"/>
     <child link="pixhawk"/>
     <axis xyz="0 0 0"/>
@@ -500,9 +500,9 @@
   <!-- link -->
   <link name="here_gps">
     <inertial>
-      <origin rpy="0 0 0" xyz="-1.3121E-06 -6.68E-05 0.0084082"/>
-      <mass value="0.11416"/>
-      <inertia ixx="2.98678228033835E-05" ixy="-1.04111821878108E-10" ixz="5.05387750838802E-11" iyy="2.97244934804792E-05" iyz="4.77263126398615E-08" izz="5.59519257601009E-05"/>
+      <origin rpy="0 0 0" xyz="-6.68E-05 -0.0084082 1.31210000000051E-06"/>
+      <mass value="0.045664"/>
+      <inertia ixx="1.18897973921917E-05" ixy="1.90905250559444E-08" ixz="-4.16447287511186E-11" iyy="2.23807703040404E-05" iyz="2.02155100330627E-11" izz="1.19471291213534E-05"/>
     </inertial>
     <visual>
       <geometry>
@@ -515,7 +515,7 @@
   </gazebo>
   <!-- joint -->
   <joint name="here_gps_fix" type="fixed">
-    <origin rpy="0 0 0" xyz="0.1 0 0.16"/>
+    <origin rpy="0 0 0" xyz="0 -0.09 0.20"/>
     <parent link="base_link"/>
     <child link="here_gps"/>
     <axis xyz="0 0 0"/>
@@ -534,7 +534,7 @@
   </gazebo>
   <!-- joint -->
   <joint name="gps_holder_fix" type="fixed">
-    <origin rpy="0 0 0" xyz="0.1 0 0.08"/>
+    <origin rpy="0 0 0" xyz="0 -0.09 0.122"/>
     <parent link="base_link"/>
     <child link="gps_holder"/>
   </joint>
@@ -667,7 +667,7 @@
   </link>
   <!-- Joint -->
   <joint name="lidar_joint" type="revolute">
-    <origin rpy="0 0 3.14" xyz="0 0.01 0.026"/>
+    <origin rpy="0 0 0" xyz="0.044 0 0.0655"/>
     <child link="lidar_link"/>
     <parent link="base_link"/>
     <limit effort="0" lower="0" upper="0" velocity="0"/>
@@ -676,7 +676,7 @@
   <gazebo reference="lidar_link">
     <material>Gazebo/DarkGrey</material>
     <sensor name="laser" type="ray">
-      <pose>0 -0.03 0.055 0 0 -1.57</pose>
+      <pose>0 0 0.055 0 0 0</pose>
       <ray>
         <scan>
           <horizontal>
@@ -714,16 +714,16 @@
       <inertia ixx="4.4834E-06" ixy="3.2726E-07" ixz="1.7419E-07" iyy="6.5755E-06" iyz="1.4639E-08" izz="1.0308E-05"/>
     </inertial>
     <visual>
-      <origin rpy="3.14 0 0" xyz="0 0 0"/>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://F550_rd/meshes/odroid.STL" scale="1 1 1"/>
+        <mesh filename="package://F550_rd/meshes/odroid_xu4.STL" scale="1 1 1"/>
       </geometry>
     </visual>
   </link>
   <joint name="odoroid_joint" type="fixed">
     <child link="odroid_link"/>
     <parent link="base_link"/>
-    <origin rpy="0 0 1.57" xyz="0 -0.032 0.038"/>
+    <origin rpy="0 0 0" xyz="-0.027 0 0.077"/>
   </joint>
   <gazebo reference="odroid_link">
     <material>Gazebo/DarkGrey</material>

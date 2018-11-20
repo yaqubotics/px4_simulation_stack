@@ -26,7 +26,7 @@
   </link>
   <!-- Joint -->
   <joint name="lidar_joint" type="revolute">
-    <origin xyz="0 0.01 0.026" rpy="0 0 3.14" />
+    <origin xyz="0.044 0 0.0655" rpy="0 0 0" />
     <child link="lidar_link"/>
     <parent link="base_link" />
     <limit upper="0" lower="0" effort="0" velocity="0" />
@@ -35,7 +35,7 @@
   <gazebo reference="lidar_link">
     <material>Gazebo/DarkGrey</material>
     <sensor name="laser" type="ray">
-      <pose>0 -0.03 0.055 0 0 -1.57</pose>
+      <pose>0 0 0.055 0 0 0</pose>
       <ray>
         <scan>
           <horizontal>
@@ -81,16 +81,16 @@
       />
     </inertial>
     <visual>
-      <origin xyz="0 0 0" rpy="3.14 0 0"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://F550_rd/meshes/odroid.STL" scale="1 1 1"/>
+        <mesh filename="package://F550_rd/meshes/odroid_xu4.STL" scale="1 1 1"/>
       </geometry>
     </visual>
   </link>
   <joint name="odoroid_joint" type="fixed">
     <child link="odroid_link"/>
     <parent link="base_link"/>
-    <origin xyz="0 -0.032 0.038" rpy="0 0 1.57"/>
+    <origin xyz="-0.027 0 0.077" rpy="0 0 0"/>
   </joint>
   <gazebo reference="odroid_link">
     <material>Gazebo/DarkGrey</material>
