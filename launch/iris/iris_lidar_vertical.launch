@@ -13,7 +13,7 @@
     </include>
     <include file="$(find px4_simulation_stack)/launch/gazebo/gzclient.launch" />
 
-    <node pkg="tf" name="base2tf" type="static_transform_publisher" args="-0.12 0 0 1.57 0 3.14 base_link lidar_link 100" />
+    <node pkg="tf" name="base2tf" type="static_transform_publisher" args="0.1 0 0 0 1.57 0 base_link lidar_link 100" />
 
 </launch>
 
