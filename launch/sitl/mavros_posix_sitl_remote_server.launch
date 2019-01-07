@@ -63,7 +63,7 @@
     <include file="$(find mavros)/launch/node.launch">
         <!-- GCS link is provided by SITL -->
         <arg name="pluginlists_yaml" value="$(find mavros)/launch/px4_pluginlists.yaml" />
-        <arg name="config_yaml" default="$(find px4_simulation_stack)/launch/config/px4_config_mavros.yaml"/>
+        <arg name="config_yaml" default="$(find px4_simulation_stack)/launch/config/px4_config.yaml"/>
 
 		<arg name="fcu_url" value="$(arg fcu_url)" />
 		<arg name="gcs_url" value="$(arg gcs_url)" />
