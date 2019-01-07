@@ -26,7 +26,7 @@
       <visual>
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
-          <mesh filename="package://F550/meshes/${mesh_file}"
+          <mesh filename="model://F550/meshes/${mesh_file}"
             scale="${mesh_scale}"/>
         </geometry>
       </visual>
@@ -94,7 +94,7 @@
       </inertial>
       <visual>
         <geometry>
-          <mesh filename="package://F550/meshes/${wing_mesh_file}"
+          <mesh filename="model://F550/meshes/${wing_mesh_file}"
             scale="${wing_mesh_scale}"/>
         </geometry>
       </visual>
@@ -120,7 +120,7 @@
       </inertial>
       <visual>
         <geometry>
-          <mesh filename="package://F550/meshes/${rotor_mesh_file}"
+          <mesh filename="model://F550/meshes/${rotor_mesh_file}"
             scale="${rotor_mesh_scale}"/>
         </geometry>
       </visual>
@@ -168,7 +168,7 @@
       </inertial>
       <visual>
         <geometry>
-          <mesh filename="package://F550/meshes/${mesh_file}"
+          <mesh filename="model://F550/meshes/${mesh_file}"
             scale="${mesh_scale}" />
         </geometry>
       </visual>
