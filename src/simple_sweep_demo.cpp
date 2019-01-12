@@ -180,8 +180,7 @@ int main(int argc, char **argv)
     // arm vehicle
     mavros_msgs::CommandBool arm_cmd;
     arm_cmd.request.value = true;
-
-    while( not(arming_client.call(arm_cmd))){
+    while(ros::ok() and not(arming_client.call(arm_cmd))){
         ros::spinOnce();
         rate.sleep();
     }
@@ -195,12 +194,12 @@ int main(int argc, char **argv)
 
     ROS_DEBUG("set lat: %f, lon: %f, alt: %f", init_latitude, init_longitude, init_altitude);
 
-    while( not(takeoff_client.call(takeoff_cmd)) and
+    while(ros::ok() and not(takeoff_client.call(takeoff_cmd)) and
                takeoff_cmd.response.success){
         ros::spinOnce();
         rate.sleep();
     }
-    while(local_pos.pose.position.z < takeoff_height-0.1){
+    while(ros::ok() and local_pos.pose.position.z < takeoff_height-0.1){
         ros::spinOnce();
         rate.sleep();
         ROS_DEBUG("Current lat: %f, lon: %f, alt: %f",curr_latitude,curr_longitude,curr_altitude);
@@ -244,14 +243,14 @@ int main(int argc, char **argv)
     landing_cmd.request.longitude = curr_longitude;
     landing_cmd.request.latitude = curr_latitude;
 
-    while( not(landing_client.call(landing_cmd)) and
+    while(ros::ok() and not(landing_client.call(landing_cmd)) and
                landing_cmd.response.success){
         ros::spinOnce();
         rate.sleep();
     }
     ROS_INFO("Vehicle landing...");
 
-    while(local_pos.pose.position.z > 0.1){
+    while(ros::ok() and local_pos.pose.position.z > 0.1){
         ros::spinOnce();
         rate.sleep();
     }
@@ -259,7 +258,7 @@ int main(int argc, char **argv)
 
     // disram
     arm_cmd.request.value = false;
-    while(!arming_client.call(arm_cmd) && arm_cmd.response.success){
+    while(ros::ok() and !arming_client.call(arm_cmd) && arm_cmd.response.success){
     }
     ROS_INFO("Vehicle disarmed");
 

@@ -73,7 +73,7 @@ int main(int argc, char **argv){
             ROS_INFO("20s elapsed");
             break;
 		}
-		
+
 		if(current_state.mode=="GUIDED"){
 			ROS_INFO("RC control enabled.");
 			break;
@@ -83,15 +83,15 @@ int main(int argc, char **argv){
 
     mavros_msgs::CommandTOL landing_msg;
     landing_msg.request.altitude = 0;
-    while(!landing_client.call(landing_msg) && landing_msg.response.success){
+    while(ros::ok() and !landing_client.call(landing_msg) && landing_msg.response.success){
     }
-  
+
     ROS_INFO("Vehicle landing...");
 
     ros::Duration(20).sleep();
 
     arm_cmd.request.value = false;
-    while(!arming_client.call(arm_cmd) && arm_cmd.response.success){
+    while(ros::ok() and !arming_client.call(arm_cmd) && arm_cmd.response.success){
     }
     ROS_INFO("Vehicle disarmed");
 
