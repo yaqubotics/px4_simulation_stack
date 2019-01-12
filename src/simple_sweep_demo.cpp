@@ -52,56 +52,58 @@ void state_cb(const mavros_msgs::State::ConstPtr& msg){
 //! Storage for local position
 geometry_msgs::PoseStamped local_pos;
 
-/**
-* @brief Callback function for local position subscriber
-* @param msg Incoming message
-*/
-void local_pos_cb(const geometry_msgs::PoseStamped::ConstPtr& msg){
-    local_pos = *msg;
+    // Initialize container for vector of points
+    std::array<std::vector<double>, 2> points;
+    points.front() = points_x;
+    points.back() = points_y;
+
+    return points;
 }
 
-//! Storage for current latitude
-double curr_latitude;
-//! Storage for current longitude
-double curr_longitude;
-//! Storage for current altitude
-double curr_altitude;
 /**
-* @brief Callback function for global position subscriber
-* @param msgptr Incoming message
-*/
-void curr_gpos_cb(const sensor_msgs::NavSatFix::ConstPtr& msgptr){
-    sensor_msgs::NavSatFix msg = *msgptr;
-    curr_latitude = msg.latitude;
-    curr_longitude = msg.longitude;
-    curr_altitude = msg.altitude;
+ * @brief Return interpolated path using bilinear interpolation from two waypoints
+ * @param start Start waypoint
+ * @param goal Goal waypoint
+ * @param step Step size of interpolation
+ * @return Vector of interpolated path
+ */
+std::vector<geometry_msgs::PoseStamped> getBilinearPath(const geometry_msgs::PoseStamped &start,
+                                                        const geometry_msgs::PoseStamped &goal,
+                                                        const double step=0.05)
+{
+    std::vector<geometry_msgs::PoseStamped> bilinear_path;
 }
 
-//! Storage for current velocity of vehicle
-geometry_msgs::TwistStamped fcu_vel;
-/**
-* @brief Callback function for velocity position subscriber
-* @param msg Incoming message
-*/
-void fcu_vel_cb(const geometry_msgs::TwistStamped::ConstPtr& msg){
-    fcu_vel = *msg;
+    return bilinear_path;
 }
-
 
 int main(int argc, char **argv)
 {
     ros::init(argc, argv, "simple_sweep_demo");
     ros::NodeHandle nh("~");
 
+    // current vehicle state
+    mavros_msgs::State current_state;
+    // current local position
+    geometry_msgs::PoseStamped local_pos;
+    // current global position
+    sensor_msgs::NavSatFix global_pos;
+    // current velocity of vehicle
+    geometry_msgs::TwistStamped fcu_vel;
+
     // Subscriber
     ros::Subscriber state_sub = nh.subscribe<mavros_msgs::State>
-            ("/mavros/state", 10, state_cb);
+            ("/mavros/state", 10,
+             [&current_state](const mavros_msgs::State::ConstPtr& msg){current_state=*msg;});
     ros::Subscriber local_pos_sub = nh.subscribe<geometry_msgs::PoseStamped>
-            ("/mavros/local_position/pose", 100, local_pos_cb);
+            ("/mavros/local_position/pose", 100,
+             [&local_pos](const geometry_msgs::PoseStamped::ConstPtr& msg){local_pos=*msg;});
     ros::Subscriber curr_gpos_sub = nh.subscribe<sensor_msgs::NavSatFix>
-            ("/mavros/global_position/global", 10, curr_gpos_cb);
+            ("/mavros/global_position/global", 10,
+             [&global_pos](const sensor_msgs::NavSatFix::ConstPtr& msg){global_pos=*msg;});
     ros::Subscriber fcu_vel_sub = nh.subscribe<geometry_msgs::TwistStamped>
-            ("/mavros/local_position/velocity", 100, fcu_vel_cb);
+            ("/mavros/local_position/velocity", 100,
+             [&fcu_vel](const geometry_msgs::TwistStamped::ConstPtr& msg){fcu_vel=*msg;});
 
     // Publisher
     ros::Publisher target_pos_pub = nh.advertise<geometry_msgs::PoseStamped>
@@ -191,7 +193,6 @@ int main(int argc, char **argv)
     takeoff_cmd.request.altitude = init_altitude + takeoff_height;
     takeoff_cmd.request.longitude = init_longitude;
     takeoff_cmd.request.latitude = init_latitude;
-
     ROS_DEBUG("set lat: %f, lon: %f, alt: %f", init_latitude, init_longitude, init_altitude);
 
     while(ros::ok() and not(takeoff_client.call(takeoff_cmd)) and
@@ -202,7 +203,9 @@ int main(int argc, char **argv)
     while(ros::ok() and local_pos.pose.position.z < takeoff_height-0.1){
         ros::spinOnce();
         rate.sleep();
-        ROS_DEBUG("Current lat: %f, lon: %f, alt: %f",curr_latitude,curr_longitude,curr_altitude);
+        ROS_DEBUG("Current lat: %f, lon: %f, alt: %f", global_pos.latitude,
+                                                       global_pos.longitude,
+                                                       global_pos.altitude);
     }
     ROS_INFO("Vehicle tookoff.");
 
@@ -239,9 +242,9 @@ int main(int argc, char **argv)
 
     // land
     mavros_msgs::CommandTOL landing_cmd;
-    landing_cmd.request.altitude = curr_altitude - takeoff_height + 0.5;
-    landing_cmd.request.longitude = curr_longitude;
-    landing_cmd.request.latitude = curr_latitude;
+    landing_cmd.request.altitude = global_pos.altitude - takeoff_height + 0.5;
+    landing_cmd.request.longitude = global_pos.longitude;
+    landing_cmd.request.latitude = global_pos.latitude;
 
     while(ros::ok() and not(landing_client.call(landing_cmd)) and
                landing_cmd.response.success){
