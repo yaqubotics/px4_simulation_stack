@@ -159,16 +159,6 @@ int main(int argc, char **argv)
     double init_altitude = init_gpos.altitude;
     ROS_INFO("Initial Lat: %f  Lon: %f  Alt: %f", init_latitude, init_longitude, init_altitude);
 
-    // set home position as current position
-    mavros_msgs::CommandHome set_hp_cmd;
-    set_hp_cmd.request.current_gps = true;
-    while( not(set_hp_client.call(set_hp_cmd)) and
-               set_hp_cmd.response.success){
-        ros::spinOnce();
-        rate.sleep();
-    }
-    ROS_INFO("HP set.");
-
     // set mode as offboard
     mavros_msgs::SetMode offb_set_mode;
     offb_set_mode.request.custom_mode = "OFFBOARD";
