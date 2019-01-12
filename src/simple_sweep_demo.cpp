@@ -159,16 +159,6 @@ int main(int argc, char **argv)
     double init_altitude = init_gpos.altitude;
     ROS_INFO("Initial Lat: %f  Lon: %f  Alt: %f", init_latitude, init_longitude, init_altitude);
 
-    // set mode as offboard
-    mavros_msgs::SetMode offb_set_mode;
-    offb_set_mode.request.custom_mode = "OFFBOARD";
-
-    while( not(set_mode_client.call(offb_set_mode))){
-        ros::spinOnce();
-        rate.sleep();
-    }
-    ROS_INFO("Offboard enabled.");
-
     // arm vehicle
     mavros_msgs::CommandBool arm_cmd;
     arm_cmd.request.value = true;
