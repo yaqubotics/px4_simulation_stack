@@ -37,20 +37,55 @@
 
 #include <pcl_conversions/pcl_conversions.h>
 
-//! Storage for vehicle state
-mavros_msgs::State current_state;
-
-/**
-* @brief Callback function for state subscriber
-* @param msg Incoming message
-*/
-void state_cb(const mavros_msgs::State::ConstPtr& msg){
-    current_state = *msg;
+bool isGoalReached(const geometry_msgs::PoseStamped &curr_pose,
+                   const geometry_msgs::PoseStamped &goal_pose, double threshold=0.5)
+{
+    geometry_msgs::Point curr = curr_pose.pose.position;
+    geometry_msgs::Point goal = goal_pose.pose.position;
+    return std::sqrt(std::pow(goal.x - curr.x, 2)
+                     + std::pow(goal.y - curr.y, 2)
+                     + std::pow(goal.z - curr.z, 2)) > threshold ? false : true;
 }
 
+/**
+ * @brief Perform linear interpolation
+ * @param p1 First point
+ * @param p2 Second point
+ * @param step Step size of interpolation
+ * @return Array of interpolated points in the shape of [x-points, y-points]
+ */
+std::array<std::vector<double>, 2> linearInterp(const std::array<double, 2> &p1,
+                                                const std::array<double, 2> &p2, const double step)
+{
+    // Gradient
+    double a = (p1.at(1) - p2.at(1)) / (p1.at(0) - p2.at(0));
+    // Intercept
+    double b = p1.at(1) - a*p1.at(0);
 
-//! Storage for local position
-geometry_msgs::PoseStamped local_pos;
+    // Number of steps
+    int num_steps = std::floor((p2.at(0) - p1.at(0))/step);
+
+    // Initialize container for interpolated points
+    std::vector<double> points_x(num_steps+1);
+
+    // Set interpolated points
+    points_x.front() = p1.at(0);
+    for(int i=1; i<num_steps; ++i)
+    {
+        points_x.at(i) = step * i + p1.at(0);
+    }
+    points_x.back() = p2.at(0);
+
+    // Initialize container for interpolated points
+    std::vector<double> points_y(num_steps+1);
+
+    // Set interpolated points
+    points_y.front() = p1.at(1);
+    for(int i=1; i<num_steps; ++i)
+    {
+        points_y.at(i) = a*(p1.at(0) + i*step) + b;
+    }
+    points_y.back() = p2.at(1);
 
     // Initialize container for vector of points
     std::array<std::vector<double>, 2> points;
@@ -72,7 +107,39 @@ std::vector<geometry_msgs::PoseStamped> getBilinearPath(const geometry_msgs::Pos
                                                         const double step=0.05)
 {
     std::vector<geometry_msgs::PoseStamped> bilinear_path;
-}
+
+    // Store x-y and x-z coordinates of start point
+    std::array<double, 2> start_xy = {start.pose.position.x, start.pose.position.y};
+    std::array<double, 2> start_xz = {start.pose.position.x, start.pose.position.z};
+    // Store x-y and x-z coordinates of goal point
+    std::array<double, 2> goal_xy = {goal.pose.position.x, goal.pose.position.y};
+    std::array<double, 2> goal_xz = {goal.pose.position.x, goal.pose.position.z};
+
+    // x-y and x-z coordinates of interpolated points
+    std::array<std::vector<double>, 2> points_xy = linearInterp(start_xy, goal_xy, step);
+    std::array<std::vector<double>, 2> points_xz = linearInterp(start_xz, goal_xz, step);
+
+    // Number of generated points by interpolation
+    int num_points = points_xy.at(0).size();
+
+    try
+    {
+        // Generate PoseStamped message from std::array
+        for(int i=0; i<num_points; ++i)
+        {
+            geometry_msgs::PoseStamped pose;
+            pose.pose.orientation = start.pose.orientation;
+            pose.pose.position.x = points_xy.front().at(i);
+            pose.pose.position.y = points_xy.back().at(i);
+            pose.pose.position.z = points_xz.back().at(i);
+
+            bilinear_path.push_back(pose);
+        }
+    }
+    catch (std::out_of_range &ex)
+    {
+        ROS_ERROR("%s", ex.what());
+    }
 
     return bilinear_path;
 }
@@ -193,26 +260,47 @@ int main(int argc, char **argv)
 
     // move along y axis
     geometry_msgs::PoseStamped target_pos_msg;
-    target_pos_msg.pose.position.x = local_pos.pose.position.x;
-    target_pos_msg.pose.position.y = -flight_length;
+    target_pos_msg.pose.position.x = 0;
+    target_pos_msg.pose.position.y = flight_length;
     target_pos_msg.pose.position.z = takeoff_height;
     target_pos_msg.pose.orientation.x = local_pos.pose.orientation.x;
     target_pos_msg.pose.orientation.y = local_pos.pose.orientation.y;
     target_pos_msg.pose.orientation.z = local_pos.pose.orientation.z;
     target_pos_msg.pose.orientation.w = local_pos.pose.orientation.w;
 
-    ROS_INFO("Vehicle moving forward...");
-
-    while (local_pos.pose.position.y > -flight_length+0.1){
+    for(int i=0; i<100; ++i)
+    {
         target_pos_pub.publish(target_pos_msg);
+    }
+
+    // set mode as offboard
+    mavros_msgs::SetMode offb_set_mode;
+    offb_set_mode.request.custom_mode = "OFFBOARD";
+    while(ros::ok() and not(set_mode_client.call(offb_set_mode))){
         ros::spinOnce();
         rate.sleep();
-        if(current_state.mode!="OFFBOARD"){
-            while( not(set_mode_client.call(offb_set_mode))){
-                ros::spinOnce();
-                rate.sleep();
-            }
-            ROS_INFO("Offboard enabled.");
+    }
+    ROS_INFO("Offboard enabled.");
+
+    // Get interpolated path from two waypoints
+    std::vector<geometry_msgs::PoseStamped> bilinear_path;
+    bilinear_path = getBilinearPath(local_pos, target_pos_msg, 0.01);
+    ROS_INFO("Vehicle moving forward...");
+    // Publish all interpolated points
+    for(auto pose: bilinear_path)
+    {
+        // Publish same message till drone arrives to local goal
+        while(ros::ok() and not isGoalReached(local_pos, pose))
+        {
+            target_pos_pub.publish(pose);
+            ros::spinOnce();
+            rate.sleep();
+        }
+
+        // interrupt path if ros node is in shutdown
+        if(not ros::ok())
+        {
+            break;
         }
     }
     ROS_INFO("Vehicle arrived destination.");
