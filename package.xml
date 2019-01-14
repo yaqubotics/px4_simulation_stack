@@ -11,6 +11,8 @@
   <author>Takaki Ueno</author>
 
   <license>MIT</license>
+  <url type="website">https://github.com/uenota/px4_simulation_stack</url>
+  <url type="bugtracker">https://github.com/uenota/px4_simulation_stack/issues</url>
 
   <buildtool_depend>catkin</buildtool_depend>
 
