@@ -32,7 +32,7 @@ jobs:
             mkdir ~/.ssh
             ssh-keyscan github.com >> ~/.ssh/known_hosts
       - run:
-          name: deploy to pdf branch
+          name: deploy to gh-pages branch
           command: |
             git config --global user.name "CircleCI"
             git config --global user.email "circleci@ghpages.com"
