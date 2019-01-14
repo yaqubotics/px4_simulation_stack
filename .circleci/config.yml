@@ -27,6 +27,11 @@ jobs:
           command: mv docs/* . && rmdir docs
           working_directory: ~/project
       - run:
+          name: skip fingerprint check
+          command: |
+            mkdir ~/.ssh
+            ssh-keyscan github.com >> ~/.ssh/known_hosts
+      - run:
           name: deploy to pdf branch
           command: |
             git config --global user.name "CircleCI"
