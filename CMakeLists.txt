@@ -61,12 +61,3 @@ set(MODEL_DIR ${CMAKE_CURRENT_SOURCE_DIR}/Tools/sitl_gazebo/models)
 build_urdf(${MODEL_DIR}/F550/xacro/F550.xacro ${MODEL_DIR}/F550/F550.urdf)
 build_urdf(${MODEL_DIR}/F550_rd/F550_rd.xacro ${MODEL_DIR}/F550_rd/F550_rd.urdf)
 build_urdf(${MODEL_DIR}/F550_wireless/F550_wireless.xacro ${MODEL_DIR}/F550_wireless/F550_wireless.urdf)
-
-# Doxygen document generation
-find_package(Doxygen)
-if(DOXYGEN_FOUND)
-add_custom_target(gen_doc ALL
-        COMMAND ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile
-        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-        VERBATIM )
-endif()
