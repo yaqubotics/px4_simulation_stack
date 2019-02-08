@@ -9,7 +9,7 @@ function(add_airframe pack_airframe_path)
 
     # aborts if directory where airframe config is put does not exist
     if(NOT EXISTS ${local_airframe_path})
-        message(FATAL_ERROR "PX4 Firmware is REQUIRED.\nInstall and run 'make posix_sitl_default gazebo'.\nIf this persists after installation, make symbolic link from Firmware/ROMFS/px4fmu_common to ~/.ros/etc")
+        file(MAKE_DIRECTORY ${local_airframe_path}/init.d-posix)
     endif()
 
     # get filename
