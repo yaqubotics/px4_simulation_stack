@@ -1,0 +1,28 @@
+<?xml version='1.0'?>
+<sdf version='1.6'>
+  <model name='iris_lidar_vertical'>
+
+    <include>
+      <uri>model://iris</uri>
+    </include>
+
+    <include>
+      <uri>model://lidar_2d</uri>
+      <pose>0.1 0 0 0 1.57 0</pose>
+    </include>
+    <joint name="lidar_joint" type="fixed">
+      <child>lidar_2d::lidar_link</child>
+      <parent>iris::base_link</parent>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <upper>0</upper>
+          <lower>0</lower>
+        </limit>
+      </axis>
+    </joint>
+
+  </model>
+</sdf>
+<!-- vim: set noet fenc=utf-8 ff=unix sts=0 sw=4 ts=4 : -->
+

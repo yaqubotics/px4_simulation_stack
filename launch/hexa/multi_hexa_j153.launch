@@ -1,0 +1,77 @@
+<launch>
+
+    <arg name="vehicle" default="F550_rd"/>
+    <arg name="verbose" default="true" />
+    <arg name="use_urdf" default="true" />
+    <arg name="model" default="$(find px4_simulation_stack)/Tools/sitl_gazebo/models/F550_rd/F550_rd.xacro" />
+
+    <arg name="x" default="0"/>
+    <arg name="y" default="0"/>
+    <arg name="z" default="0"/>
+    <arg name="R" default="0"/>
+    <arg name="P" default="0"/>
+    <arg name="Y" default="1.57"/>
+
+    <include file="$(find px4_simulation_stack)/launch/sitl/mavros_posix_sitl_gazebo_only.launch">
+        <arg name="world" value="$(find px4_simulation_stack)/Tools/sitl_gazebo/worlds/small_city6.world"/>
+        <arg name="verbose" value="$(arg verbose)" />
+    </include>
+
+    <group ns="uav_0">
+    <arg name="ID" value="0"/>
+    <arg name="fcu_url" default="udp://:14540@localhost:14580"/>
+    <include file="$(find px4_simulation_stack)/launch/sitl/mavros_posix_sitl_no_gazebo.launch">
+        <arg name="vehicle" value="$(arg vehicle)" />
+        <arg name="model" value="$(find px4_simulation_stack)/Tools/sitl_gazebo/models/F550_rd/F550_rd_$(arg ID).xacro" />
+        <arg name="use_urdf" value="$(arg use_urdf)"/>
+        <arg name="ID" value="$(arg ID)"/>
+        <arg name="fcu_url" value="$(arg fcu_url)"/>
+        <arg name="mavlink_udp_port" value="14560"/>
+
+        <arg name="x" value="0" />
+        <arg name="y" value="0" />
+        <arg name="z" value="0" />
+        <arg name="R" value="0" />
+        <arg name="P" value="0" />
+        <arg name="Y" value="1.57" />
+    </include>
+
+    <!-- Launching laser_assembler -->
+    <!--include file="$(find px4_simulation_stack)/launch/laser/px4_assemble.launch" /-->
+    </group>
+
+    <group ns="uav_1">
+    <arg name="ID" value="1"/>
+    <arg name="fcu_url" default="udp://:14541@localhost:14581"/>
+    <include file="$(find px4_simulation_stack)/launch/sitl/mavros_posix_sitl_no_gazebo.launch">
+        <arg name="vehicle" value="$(arg vehicle)" />
+        <!--arg name="model" value="$(arg model)" /-->
+        <arg name="model" value="$(find px4_simulation_stack)/Tools/sitl_gazebo/models/F550_rd/F550_rd_$(arg ID).xacro" />
+        <arg name="use_urdf" value="$(arg use_urdf)"/>
+        <arg name="ID" value="$(arg ID)"/>
+        <arg name="fcu_url" value="$(arg fcu_url)"/>
+        <arg name="mavlink_udp_port" value="14561"/>
+
+        <arg name="x" value="2" />
+        <arg name="y" value="0" />
+        <arg name="z" value="0" />
+        <arg name="R" value="0" />
+        <arg name="P" value="0" />
+        <arg name="Y" value="1.57" />
+    </include>
+
+    <!-- Launching laser_assembler -->
+    
+    </group>
+<include file="$(find px4_simulation_stack)/launch/laser/px4_assemble.launch" />
+    <node pkg="tf" type="static_transform_publisher" name="uav1_to_uav0" args="2.0 0 0 0 0 0 /uav_0/map /uav_1/map 20" />
+    <!--node pkg="tf" type="static_transform_publisher" name="robot3_to_robot1" args="0 0.8 0 0 0 0 /robot_1/map /robot_3/map 20" /-->
+
+    <include file="$(find px4_simulation_stack)/launch/gazebo/gzclient.launch" />
+    <!-- Map megring (know inital position case)-->
+<include file="$(find px4_simulation_stack)/launch/initposes.launch"/>
+<include file="$(find px4_simulation_stack)/launch/map_merge.launch"/>
+
+</launch>
+
+<!-- vim: set et ft=xml fenc=utf-8 ff=unix sts=0 sw=4 ts=4 : -->

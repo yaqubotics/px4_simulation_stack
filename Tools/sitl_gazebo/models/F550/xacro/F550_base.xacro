@@ -1,0 +1,453 @@
+<?xml version="1.0"?>
+
+<robot name="F550" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- F550 base properties -->
+  <!-- common properties -->
+  <xacro:property name="namespace" value="" />
+  <xacro:property name="rotor_velocity_slowdown_sim" value="10" />
+
+  <!-- base_link properties -->
+  <xacro:property name="base_mass" value="1.50" />
+  <xacro:property name="base_mesh_file" value="base_link.STL"/>
+  <xacro:property name="base_mesh_scale" value="1 1 1"/>
+  <xacro:property name="base_color" value="Black" />
+  <xacro:property name="collision_length" value="0.13" />
+  <xacro:property name="collision_radius" value="0.295" />
+  <xacro:property name="base_inertia"
+  >
+    <!-- units: kg･m^2 -->
+      <inertia
+        ixx="0.00012113"
+        ixy="-2.4623E-08"
+        ixz="1.6419E-06"
+        iyy="0.00013125"
+        iyz="6.0617E-07"
+        izz="1.8253E-05" />
+  </xacro:property>
+  <xacro:property name="collision_origin"
+  >
+    <origin xyz="0 0 0.03" rpy="0 0 0" />
+  </xacro:property>
+
+  <!-- rotors properties -->
+  <xacro:property name="wing_parent" value="base_link" />
+  <xacro:property name="motor_constant" value="8.54858e-06" />
+  <xacro:property name="moment_constant" value="0.06" />
+  <xacro:property name="mass_rotor" value="0.0091837" />
+  <xacro:property name="mass_wing" value="0.11819" />
+  <xacro:property name="rotor_collision_radius" value="0.13" />
+  <xacro:property name="rotor_collision_length" value="0.03" />
+  <xacro:property name="time_constant_up" value="0.0125" />
+  <xacro:property name="time_constant_down" value="0.025" />
+  <xacro:property name="max_rot_velocity" value="1500" />
+  <xacro:property name="rotor_drag_coefficient" value="0.000806428" />
+  <xacro:property name="rolling_moment_coefficient" value="1e-06" />
+  <xacro:property name="prop_mesh_scale" value="1 1 1" />
+  <xacro:property name="ccw_prop_mesh_file" value="ccw_prop.STL" />
+  <xacro:property name="cw_prop_mesh_file" value="cw_prop.STL" />
+  <xacro:property name="wing_mesh_scale" value="1 1 1" />
+  <xacro:property name="wing_mesh_file" value="wing.STL"/>
+  <xacro:property name="wing_inertia_origin"
+  >
+    <origin
+      xyz="0.033233 0.00054387 0.012567"
+      rpy="0 0 0" />
+  </xacro:property>
+  <xacro:property name="wing_inertia"
+  >
+    <inertia
+      ixx="2.1906E-05"
+      ixy="7.962E-07"
+      ixz="-6.9968E-05"
+      iyy="0.0002878"
+      iyz="2.0567E-07"
+      izz="0.0002659" />
+  </xacro:property>
+  <xacro:property name="rotor_origin"
+  >
+    <origin
+      xyz="0.0865 0.0005 0.033"
+      rpy="0 0 0" />
+  </xacro:property>
+  <xacro:property name="cw_rotor_inertia"
+  >
+    <inertia
+        ixx="3.009E-07"
+        ixy="1.5042E-07"
+        ixz="0"
+        iyy="3.4024E-05"
+        iyz="0"
+        izz="3.4239E-05" />
+  </xacro:property>
+  <xacro:property name="ccw_rotor_inertia"
+  >
+    <inertia
+        ixx="3.00752E-07"
+        ixy="-1.4455E-07"
+        ixz="0"
+        iyy="3.41061E-05"
+        iyz="0"
+        izz="3.43204E-05" />
+  </xacro:property>
+  <xacro:property name="rotor_inertia_origin"
+  >
+  <origin
+        xyz="0 0 0.0078525"
+        rpy="0 0 0" />
+  </xacro:property>
+
+  <!-- Include hexarotor base -->
+  <xacro:include filename="hexa_base.xacro" />
+
+  <!-- base_link -->
+  <xacro:hexa_base
+    namespace="${namespace}"
+    mass="${base_mass}"
+    mesh_file="${base_mesh_file}"
+    mesh_scale="${base_mesh_scale}"
+    rotor_velocity_slowdown_sim="${rotor_velocity_slowdown_sim}"
+    color="${base_color}"
+    collision_length="${collision_length}"
+    collision_radius="${collision_radius}"
+  >
+    <xacro:insert_block name="base_inertia" />
+    <xacro:insert_block name="collision_origin" />
+  </xacro:hexa_base>
+
+  <!-- rotors -->
+  <!-- 1st rotor -->
+  <xacro:vertical_rotor
+    motor_number="0"
+    namespace="${namespace}"
+    parent="${wing_parent}"
+    wing_mesh_file="${wing_mesh_file}"
+    wing_mesh_scale="${wing_mesh_scale}"
+    mass_wing="${mass_wing}"
+    wing_color="White"
+    mass_rotor="${mass_rotor}"
+    rotor_mesh_file="${cw_prop_mesh_file}"
+    rotor_mesh_scale="${prop_mesh_scale}"
+    rotor_collision_length="${rotor_collision_length}"
+    rotor_collision_radius="${rotor_collision_radius}"
+    rotor_color="Black"
+    suffix="right"
+    direction="cw"
+    time_constant_up="${time_constant_up}"
+    time_constant_down="${time_constant_down}"
+    max_rot_velocity="${max_rot_velocity}"
+    motor_constant="${motor_constant}"
+    moment_constant="${moment_constant}"
+    rotor_drag_coefficient="${rotor_drag_coefficient}"
+    rolling_moment_coefficient="${rolling_moment_coefficient}"
+    rotor_velocity_slowdown_sim="${rotor_velocity_slowdown_sim}"
+  >
+    <!-- wing_origin -->
+    <origin
+      xyz="0 -0.1875 0.026"
+      rpy="0 0 ${-pi / 2}" />
+    <!-- wing_inertia_origin -->
+    <xacro:insert_block name="wing_inertia_origin" />
+    <!-- wing_inertia -->
+    <xacro:insert_block name="wing_inertia" />
+    <!-- rotor_origin -->
+    <xacro:insert_block name="rotor_origin" />
+    <!-- rotor_inertia_origin -->
+    <xacro:insert_block name="rotor_inertia_origin" />
+    <!-- rotor_inertia -->
+    <xacro:insert_block name="cw_rotor_inertia" />
+  </xacro:vertical_rotor>
+
+  <!-- 2nd rotor -->
+  <xacro:vertical_rotor
+    motor_number="1"
+    namespace="${namespace}"
+    parent="${wing_parent}"
+    wing_mesh_file="${wing_mesh_file}"
+    wing_mesh_scale="${wing_mesh_scale}"
+    mass_wing="${mass_wing}"
+    wing_color="White"
+    mass_rotor="${mass_rotor}"
+    rotor_mesh_file="${ccw_prop_mesh_file}"
+    rotor_mesh_scale="${prop_mesh_scale}"
+    rotor_collision_length="${rotor_collision_length}"
+    rotor_collision_radius="${rotor_collision_radius}"
+    rotor_color="Orange"
+    suffix="left"
+    direction="ccw"
+    time_constant_up="${time_constant_up}"
+    time_constant_down="${time_constant_down}"
+    max_rot_velocity="${max_rot_velocity}"
+    motor_constant="${motor_constant}"
+    moment_constant="${moment_constant}"
+    rotor_drag_coefficient="${rotor_drag_coefficient}"
+    rolling_moment_coefficient="${rolling_moment_coefficient}"
+    rotor_velocity_slowdown_sim="${rotor_velocity_slowdown_sim}"
+  >
+    <!-- wing_origin -->
+    <origin
+      xyz="0 0.1875 0.026"
+      rpy="0 0 ${pi / 2}" />
+    <!-- wing_inertia_origin -->
+    <xacro:insert_block name="wing_inertia_origin" />
+    <!-- wing_inertia -->
+    <xacro:insert_block name="wing_inertia" />
+    <!-- rotor_origin -->
+    <xacro:insert_block name="rotor_origin" />
+    <!-- rotor_inertia_origin -->
+    <xacro:insert_block name="rotor_inertia_origin" />
+    <!-- rotor_inertia -->
+    <xacro:insert_block name="ccw_rotor_inertia" />
+  </xacro:vertical_rotor>
+
+  <!-- 3rd rotor -->
+  <xacro:vertical_rotor
+    motor_number="2"
+    namespace="${namespace}"
+    parent="${wing_parent}"
+    wing_mesh_file="${wing_mesh_file}"
+    wing_mesh_scale="${wing_mesh_scale}"
+    mass_wing="${mass_wing}"
+    wing_color="White"
+    mass_rotor="${mass_rotor}"
+    rotor_mesh_file="${cw_prop_mesh_file}"
+    rotor_mesh_scale="${prop_mesh_scale}"
+    rotor_collision_length="${rotor_collision_length}"
+    rotor_collision_radius="${rotor_collision_radius}"
+    rotor_color="Black"
+    suffix="left_front"
+    direction="cw"
+    time_constant_up="${time_constant_up}"
+    time_constant_down="${time_constant_down}"
+    max_rot_velocity="${max_rot_velocity}"
+    motor_constant="${motor_constant}"
+    moment_constant="${moment_constant}"
+    rotor_drag_coefficient="${rotor_drag_coefficient}"
+    rolling_moment_coefficient="${rolling_moment_coefficient}"
+    rotor_velocity_slowdown_sim="${rotor_velocity_slowdown_sim}"
+  >
+    <!-- wing_origin -->
+    <origin
+      xyz="${0.1875 * cos(pi/6)} ${0.1875 * sin(pi/6)} 0.026"
+      rpy="0 0 ${pi/6}" />
+    <!-- wing_inertia_origin -->
+    <xacro:insert_block name="wing_inertia_origin" />
+    <!-- wing_inertia -->
+    <xacro:insert_block name="wing_inertia" />
+    <!-- rotor_origin -->
+    <xacro:insert_block name="rotor_origin" />
+    <!-- rotor_inertia_origin -->
+    <xacro:insert_block name="rotor_inertia_origin" />
+    <!-- rotor_inertia -->
+    <xacro:insert_block name="cw_rotor_inertia" />
+  </xacro:vertical_rotor>
+
+  <!-- 4th rotor -->
+  <xacro:vertical_rotor
+    motor_number="3"
+    namespace="${namespace}"
+    parent="${wing_parent}"
+    wing_mesh_file="${wing_mesh_file}"
+    wing_mesh_scale="${wing_mesh_scale}"
+    mass_wing="${mass_wing}"
+    wing_color="Red"
+    mass_rotor="${mass_rotor}"
+    rotor_mesh_file="${ccw_prop_mesh_file}"
+    rotor_mesh_scale="${prop_mesh_scale}"
+    rotor_collision_length="${rotor_collision_length}"
+    rotor_collision_radius="${rotor_collision_radius}"
+    rotor_color="Orange"
+    suffix="right_rear"
+    direction="ccw"
+    time_constant_up="${time_constant_up}"
+    time_constant_down="${time_constant_down}"
+    max_rot_velocity="${max_rot_velocity}"
+    motor_constant="${motor_constant}"
+    moment_constant="${moment_constant}"
+    rotor_drag_coefficient="${rotor_drag_coefficient}"
+    rolling_moment_coefficient="${rolling_moment_coefficient}"
+    rotor_velocity_slowdown_sim="${rotor_velocity_slowdown_sim}"
+  >
+    <!-- wing_origin -->
+    <origin
+      xyz="${0.1875 * cos(-5*pi/6)} ${0.1875 * sin(-5*pi/6)} 0.026"
+      rpy="0 0 ${-5*pi/6}" />
+    <!-- wing_inertia_origin -->
+    <xacro:insert_block name="wing_inertia_origin" />
+    <!-- wing_inertia -->
+    <xacro:insert_block name="wing_inertia" />
+    <!-- rotor_origin -->
+    <xacro:insert_block name="rotor_origin" />
+    <!-- rotor_inertia_origin -->
+    <xacro:insert_block name="rotor_inertia_origin" />
+    <!-- rotor_inertia -->
+    <xacro:insert_block name="ccw_rotor_inertia" />
+  </xacro:vertical_rotor>
+
+  <!-- 5th rotor -->
+  <xacro:vertical_rotor
+    motor_number="4"
+    namespace="${namespace}"
+    parent="${wing_parent}"
+    wing_mesh_file="${wing_mesh_file}"
+    wing_mesh_scale="${wing_mesh_scale}"
+    mass_wing="${mass_wing}"
+    wing_color="White"
+    mass_rotor="${mass_rotor}"
+    rotor_mesh_file="${ccw_prop_mesh_file}"
+    rotor_mesh_scale="${prop_mesh_scale}"
+    rotor_collision_length="${rotor_collision_length}"
+    rotor_collision_radius="${rotor_collision_radius}"
+    rotor_color="Orange"
+    suffix="right_front"
+    direction="ccw"
+    time_constant_up="${time_constant_up}"
+    time_constant_down="${time_constant_down}"
+    max_rot_velocity="${max_rot_velocity}"
+    motor_constant="${motor_constant}"
+    moment_constant="${moment_constant}"
+    rotor_drag_coefficient="${rotor_drag_coefficient}"
+    rolling_moment_coefficient="${rolling_moment_coefficient}"
+    rotor_velocity_slowdown_sim="${rotor_velocity_slowdown_sim}"
+  >
+    <!-- wing_origin -->
+    <origin
+      xyz="${0.1875 * cos(-pi/6)} ${0.1875 * sin(-pi/6)} 0.026"
+      rpy="0 0 ${-pi/6}" />
+    <!-- wing_inertia_origin -->
+    <xacro:insert_block name="wing_inertia_origin" />
+    <!-- wing_inertia -->
+    <xacro:insert_block name="wing_inertia" />
+    <!-- rotor_origin -->
+    <xacro:insert_block name="rotor_origin" />
+    <!-- rotor_inertia_origin -->
+    <xacro:insert_block name="rotor_inertia_origin" />
+    <!-- rotor_inertia -->
+    <xacro:insert_block name="ccw_rotor_inertia" />
+  </xacro:vertical_rotor>
+
+  <!-- 6th rotor -->
+  <xacro:vertical_rotor
+    motor_number="5"
+    namespace="${namespace}"
+    parent="${wing_parent}"
+    wing_mesh_file="${wing_mesh_file}"
+    wing_mesh_scale="${wing_mesh_scale}"
+    mass_wing="${mass_wing}"
+    wing_color="Red"
+    mass_rotor="${mass_rotor}"
+    rotor_mesh_file="${cw_prop_mesh_file}"
+    rotor_mesh_scale="${prop_mesh_scale}"
+    rotor_collision_length="${rotor_collision_length}"
+    rotor_collision_radius="${rotor_collision_radius}"
+    rotor_color="Black"
+    suffix="left_rear"
+    direction="cw"
+    time_constant_up="${time_constant_up}"
+    time_constant_down="${time_constant_down}"
+    max_rot_velocity="${max_rot_velocity}"
+    motor_constant="${motor_constant}"
+    moment_constant="${moment_constant}"
+    rotor_drag_coefficient="${rotor_drag_coefficient}"
+    rolling_moment_coefficient="${rolling_moment_coefficient}"
+    rotor_velocity_slowdown_sim="${rotor_velocity_slowdown_sim}"
+  >
+    <!-- wing_origin -->
+    <origin
+      xyz="${0.1875 * cos(5*pi/6)} ${0.1875 * sin(5*pi/6)} 0.026"
+      rpy="0 0 ${5*pi/6}" />
+    <!-- wing_inertia_origin -->
+    <xacro:insert_block name="wing_inertia_origin" />
+    <!-- wing_inertia -->
+    <xacro:insert_block name="wing_inertia" />
+    <!-- rotor_origin -->
+    <xacro:insert_block name="rotor_origin" />
+    <!-- rotor_inertia_origin -->
+    <xacro:insert_block name="rotor_inertia_origin" />
+    <!-- rotor_inertia -->
+    <xacro:insert_block name="cw_rotor_inertia" />
+  </xacro:vertical_rotor>
+
+  <!-- accessories -->
+  <!-- FCU -->
+  <xacro:accessory
+    name="pixhawk"
+    mass="0.074008"
+    mesh_file="pixhawk.STL"
+    mesh_scale="1 1 1"
+    color="FlatBlack"
+    parent="base_link"
+  >
+    <!-- ogigin -->
+    <origin
+      xyz="0 0 0"
+      rpy="0 0 0" />
+    <!-- inertial origin -->
+    <origin
+      xyz="-0.0024647 9.4432E-05 0.011865"
+      rpy="0 0 0" />
+    <!-- inertia -->
+    <inertia
+      ixx="3.8198E-06"
+      ixy="-6.11E-09"
+      ixz="2.3562E-07"
+      iyy="3.8099E-06"
+      iyz="7.5702E-08"
+      izz="4.7645E-08" />
+    <!-- axis -->
+    <axis
+      xyz="0 0 0" />
+  </xacro:accessory>
+
+  <!-- GPS -->
+  <xacro:accessory
+    name="here_gps"
+    mass="0.045664"
+    mesh_file="here_gps.STL"
+    mesh_scale="1 1 1"
+    color="DarkGrey"
+    parent="base_link"
+  >
+    <!-- ogigin -->
+    <origin
+      xyz="0 -0.09 0.20"
+      rpy="0 0 0" />
+    <!-- inertial origin -->
+    <origin
+      xyz="-6.68E-05 -0.0084082 1.31210000000051E-06"
+      rpy="0 0 0" />
+    <!-- inertia -->
+    <inertia
+      ixx="1.18897973921917E-05"
+      ixy="1.90905250559444E-08"
+      ixz="-4.16447287511186E-11"
+      iyy="2.23807703040404E-05"
+      iyz="2.02155100330627E-11"
+      izz="1.19471291213534E-05" />
+    <!-- axis -->
+    <axis
+      xyz="0 0 0" />
+  </xacro:accessory>
+
+  <!-- GPS Holder -->
+  <!-- link -->
+  <link name="gps_holder">
+    <visual>
+      <geometry>
+        <cylinder radius="0.002" length="0.165" />
+      </geometry>
+    </visual>
+  </link>
+  <gazebo reference="gps_holder">
+    <material>Gazebo/DarkGrey</material>
+  </gazebo>
+
+  <!-- joint -->
+  <joint name="gps_holder_fix" type="fixed">
+    <origin
+      xyz="0 -0.09 0.122"
+      rpy="0 0 0" />
+    <parent link="base_link"/>
+    <child link="gps_holder"/>
+  </joint>
+</robot>

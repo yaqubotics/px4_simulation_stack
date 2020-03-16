@@ -1,0 +1,8 @@
+<!-- See http://wiki.ros.org/laser_filters for details -->
+
+<launch>
+  <node pkg="laser_filters" type="scan_to_scan_filter_chain" name="laser_filter">
+    <rosparam command="load" file="$(find px4_simulation_stack)/launch/config/laser_filter_config.yaml" />
+    <remap from="scan" to="laser/scan" />
+  </node>
+</launch>

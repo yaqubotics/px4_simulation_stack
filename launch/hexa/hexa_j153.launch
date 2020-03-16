@@ -1,0 +1,37 @@
+<launch>
+
+    <arg name="vehicle" default="F550_rd"/>
+    <arg name="verbose" default="true" />
+    <arg name="use_urdf" default="true" />
+    <arg name="model" default="$(find px4_simulation_stack)/Tools/sitl_gazebo/models/F550_rd/F550_rd.xacro" />
+
+    <arg name="x" default="0"/>
+    <arg name="y" default="0"/>
+    <arg name="z" default="0"/>
+    <arg name="R" default="0"/>
+    <arg name="P" default="0"/>
+    <arg name="Y" default="1.57"/>
+
+    <include file="$(find px4_simulation_stack)/launch/sitl/mavros_posix_sitl_remote_server.launch">
+        <arg name="vehicle" value="$(arg vehicle)" />
+        <arg name="world" value="$(find px4_simulation_stack)/Tools/sitl_gazebo/worlds/small_city6.world"/>
+        <arg name="model" value="$(arg model)" />
+        <arg name="use_urdf" value="$(arg use_urdf)"/>
+        <arg name="verbose" value="$(arg verbose)" />
+        <arg name="x" value="$(arg x)" />
+        <arg name="y" value="$(arg y)" />
+        <arg name="z" value="$(arg z)" />
+        <arg name="R" value="$(arg R)" />
+        <arg name="P" value="$(arg P)" />
+        <arg name="Y" value="$(arg Y)" />
+    </include>
+
+    <include file="$(find px4_simulation_stack)/launch/gazebo/gzclient.launch" />
+
+    <!-- Launching laser_assembler -->
+    <!--
+    <include file="$(find px4_simulation_stack)/launch/laser/px4_assemble.launch" />
+    -->
+</launch>
+
+<!-- vim: set et ft=xml fenc=utf-8 ff=unix sts=0 sw=4 ts=4 : -->

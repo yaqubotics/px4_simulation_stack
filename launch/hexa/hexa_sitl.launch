@@ -1,0 +1,34 @@
+<launch>
+
+    <!-- Posix SITL environment launch script -->
+    <arg name="use_urdf" default="true" />
+    <arg name="vehicle" default="F550"/>
+    <arg name="model" default="$(find px4_simulation_stack)/Tools/sitl_gazebo/models/F550/xacro/F550.xacro" />
+
+    <arg name="x" default="0"/>
+    <arg name="y" default="0"/>
+    <arg name="z" default="0"/>
+    <arg name="R" default="0"/>
+    <arg name="P" default="0"/>
+    <arg name="Y" default="0"/>
+
+    <arg name="verbose" default="false"/>
+
+    <include file="$(find px4_simulation_stack)/launch/sitl/mavros_posix_sitl_remote_server.launch">
+        <arg name="x" value="$(arg x)" />
+        <arg name="y" value="$(arg y)" />
+        <arg name="z" value="$(arg z)" />
+        <arg name="R" value="$(arg R)" />
+        <arg name="P" value="$(arg P)" />
+        <arg name="Y" value="$(arg Y)" />
+        <arg name="vehicle" value="$(arg vehicle)" />
+        <arg name="use_urdf" value="$(arg use_urdf)"/>
+        <arg name="model" value="$(arg model)"/>
+        <arg name="verbose" value="$(arg verbose)" />
+    </include>
+
+    <include file="$(find px4_simulation_stack)/launch/gazebo/gzclient.launch" />
+
+</launch>
+
+<!-- vim: set et ft=xml fenc=utf-8 ff=unix sts=0 sw=4 ts=4 : -->

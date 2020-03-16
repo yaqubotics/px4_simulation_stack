@@ -1,0 +1,109 @@
+<?xml version="1.0"?>
+
+
+<!--
+  Reference:
+    http://wiki.ros.org/hector_slam/Tutorials/SettingUpForYourRobot
+    https://github.com/uenota/f550_launch_odroid/wiki/mapping_default.launch
+-->
+
+<launch>
+  <arg name="tf_map_scanmatch_transform_frame_name" default="scanmatcher_frame"/>
+  <arg name="base_frame" default="base_link"/>
+  <arg name="odom_frame" default="base_link"/>
+  <arg name="map_frame" default="map"/>
+  <arg name="pub_map_odom_transform" default="false"/>
+  <arg name="scan_subscriber_queue_size" default="50"/>
+  <arg name="scan_topic" default="laser/scan"/>
+  <arg name="map_size" default="128"/>
+  <arg name="ID" default="0"/>
+
+<group ns="uav_$(arg ID)">
+  <node pkg="hector_mapping" type="hector_mapping" name="hector_mapping" output="screen">
+
+    <!-- Frame names -->
+    <param name="map_frame" value="uav_$(arg ID)/map" />
+    <param name="base_frame" value="uav_$(arg ID)/$(arg base_frame)" />
+    <param name="odom_frame" value="uav_$(arg ID)/$(arg odom_frame)" />
+
+    <!-- Tf use -->
+    <param name="use_tf_scan_transformation" value="true"/>
+    <param name="use_tf_pose_start_estimate" value="false"/>
+    <param name="pub_map_odom_transform" value="$(arg pub_map_odom_transform)"/>
+
+    <!-- Map size / start point -->
+    <param name="map_resolution" value="0.4"/>
+    <param name="map_size" value="$(arg map_size)"/>
+    <param name="map_start_x" value="0.5"/>
+    <param name="map_start_y" value="0.5" />
+    <param name="map_multi_res_levels" value="1" />
+    <param name="map_pub_period" value="1.5"/>
+
+    <!-- Map update parameters -->
+    <param name="update_factor_free" value="0.3"/>
+    <param name="update_factor_occupied" value="0.85" />
+    <param name="map_update_distance_thresh" value="0.1"/>
+    <param name="map_update_angle_thresh" value="0.06" />
+    <param name="laser_z_min_value" value = "-0.1" />
+    <param name="laser_z_max_value" value = "0.1" />
+
+    <!-- Advertising config -->
+    <param name="advertise_map_service" value="true"/>
+
+    <param name="scan_subscriber_queue_size" value="$(arg scan_subscriber_queue_size)"/>
+    <param name="scan_topic" value="uav_$(arg ID)/$(arg scan_topic)"/>
+
+    <!-- Debug parameters -->
+    <!--
+      <param name="output_timing" value="false"/>
+      <param name="pub_drawings" value="true"/>
+      <param name="pub_debug_output" value="true"/>
+    -->
+    <param name="tf_map_scanmatch_transform_frame_name" value="$(arg tf_map_scanmatch_transform_frame_name)" />
+  </node>
+
+    <!-- Start GeoTIFF mapper -->
+    <!--include file="$(find hector_geotiff)/launch/geotiff_mapper.launch">
+        <arg name="trajectory_publish_rate" value="4"/>
+    </include-->
+
+  <node pkg="hector_trajectory_server" type="hector_trajectory_server" name="hector_trajectory_server" output="screen">
+    <param name="target_frame_name" type="string" value="uav_$(arg ID)/map" />
+    <param name="source_frame_name" type="string" value="uav_$(arg ID)/base_link" />
+    <param name="trajectory_update_rate" type="double" value="8" />
+    <param name="trajectory_publish_rate" type="double" value="4" />
+  </node>
+    <!-- Start rviz visualization with preset config -->
+<!--
+  <node pkg="move_base" type="move_base" respawn="false" name="move_base_node" output="screen">
+    <param name="footprint_padding" value="0.01" />
+    <param name="controller_frequency" value="5.0" />
+    <param name="controller_patience" value="3.0" />
+    <param name="oscillation_timeout" value="30.0" />
+    <param name="oscillation_distance" value="0.5" />
+    <param name="planner_patience" value="1" />
+    <param name="controller_patience" value="1" /> 
+    <remap from="cmd_vel" to="mobile_base/commands/velocity"/>
+    <param name="recovery_behavior_enabled" value="false" />
+    <rosparam file="$(find rrt_exploration_tutorials)/param/costmap_common_params.yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find rrt_exploration_tutorials)/param/costmap_common_params.yaml" command="load" ns="local_costmap" />
+    <rosparam file="$(find rrt_exploration_tutorials)/param/local_costmap_params.yaml" command="load" />
+    <rosparam file="$(find rrt_exploration_tutorials)/param/global_costmap_params.yaml" command="load" />
+    <rosparam file="$(find rrt_exploration_tutorials)/param/base_local_planner_params.yaml" command="load" />  
+    <param name="global_costmap/global_frame" value="/map"/>
+    <param name="global_costmap/robot_base_frame" value="/base_link"/>
+    <param name="global_costmap/laser_scan_sensor/sensor_frame" value="/base_laser_link"/>
+    <param name="global_costmap/laser_scan_sensor/topic" value="/base_scan"/>    
+    <param name="local_costmap/global_frame" value="/odom"/>
+    <param name="local_costmap/robot_base_frame" value="/base_link"/>
+    <param name="local_costmap/laser_scan_sensor/sensor_frame" value="/base_laser_link"/>
+    <param name="local_costmap/laser_scan_sensor/topic" value="/base_scan"/>
+    <param name="local_costmap/obstacle_layer/laser_scan_sensor/topic" value="/base_scan"/>
+  </node>
+-->
+ <!-- <node pkg="costmap_2d" type="costmap_2d" name="costmap_2d_node" output="screen">
+  </node> -->
+    <!--node pkg="rviz" type="rviz" name="rviz" args="-d $(find px4_simulation_stack)/rviz_cfg/hexa_slam.rviz"/-->
+</group>
+  <!--<node pkg="tf" type="static_transform_publisher" name="map_nav_broadcaster" args="0 0 0 0 0 0 map nav 100"/>-->
+</launch>
